@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Details | Ahmed Kaoud</title>
+    <!-- Main Site CSS -->
+    <link rel="stylesheet" href="assets/css/all.css/all.css" />
+    <link rel="stylesheet" href="assets/css/home/home.css" />
+    <!-- Blog Details Specific CSS -->
+    <link rel="stylesheet" href="assets/css/blog-details.css" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <div class="logo">
+            <a href="index.html">Ahmed<span>Kaoud</span></a>
+          </div>
+          <div class="list-darkmode-menu">
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="blogs.html">Blogs</a></li>
+            </ul>
+            <label class="mode">
+              <input type="checkbox" id="darkModeButton" />
+              <i class="fa-solid fa-sun"></i>
+              <i class="fa-solid fa-moon"></i>
+            </label>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <section class="blog-details-section">
+      <div class="container">
+        <div class="details-wrapper">
+          <button id="back-btn" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to Blogs
+          </button>
+
+          <div id="blog-content" class="blog-content hidden">
+            <h1 id="blog-title"></h1>
+            <div class="blog-meta">
+              <span id="blog-date"></span>
+            </div>
+
+            <div class="blog-image-container">
+              <img id="blog-image" src="" alt="Blog Image" />
+            </div>
+
+            <div class="blog-description">
+              <p id="blog-description-text"></p>
+            </div>
+
+            <div class="blog-author">
+              <p>Written by: <span id="blog-footer"></span></p>
+            </div>
+          </div>
+
+          <div id="loading" class="loading">Loading details...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-wrapper">
+          <p>Copyright &copy; 2025 by How To Dev | <span>Ahmed Kaoud</span>.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/blog-details.js"></script>
+  </body>
+</html>

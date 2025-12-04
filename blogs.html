@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogs | Ahmed Kaoud</title>
+    <!-- Main Site CSS -->
+    <link rel="stylesheet" href="assets/css/all.css/all.css" />
+    <link rel="stylesheet" href="assets/css/home/home.css" />
+    <!-- Blogs Specific CSS -->
+    <link rel="stylesheet" href="assets/css/blogs.css" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <div class="logo">
+            <a href="index.html">Ahmed<span>Kaoud</span></a>
+          </div>
+          <div class="list-darkmode-menu">
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="blogs.html" class="active">Blogs</a></li>
+            </ul>
+            <label class="mode">
+              <input type="checkbox" id="darkModeButton" />
+              <i class="fa-solid fa-sun"></i>
+              <i class="fa-solid fa-moon"></i>
+            </label>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <section class="blogs-section">
+      <div class="container">
+        <h2>Latest <span>Blogs</span></h2>
+        <div id="blogs-container" class="blogs-grid">
+          <!-- Blogs will be loaded here -->
+          <div class="loading">Loading blogs...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-wrapper">
+          <p>Copyright &copy; 2025 by How To Dev | <span>Ahmed Kaoud</span>.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/blogs.js"></script>
+    <!-- Auth Script for consistency if needed, but we'll handle auth in blogs.js as requested -->
+  </body>
+</html>

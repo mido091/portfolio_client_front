@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="menu">
+      <ul>
+        <li class="profile">
+          <div class="img-box">
+            <img
+              src="Image/cheerful_man_with_hands_crossed_transparent_background_g_1_3_1.jpg"
+              alt="image profile"
+            />
+          </div>
+          <h2>Ahmed kaoud</h2>
+        </li>
+        <hr />
+        <li>
+          <a class="active" href="#">
+            <i class="fas fa-home"></i>
+            <p>dashboard</p>
+          </a>
+        </li>
+        <li>
+          <a href="dashboard_users.html">
+            <i class="fas fa-user-group"></i>
+            <p>clients</p>
+          </a>
+        </li>
+        <li>
+          <a href="index.html">
+            <i class="fas fa-home"></i>
+            <p>Home</p>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-table"></i>
+            <p>products</p>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-chart-pie"></i>
+            <p>charts</p>
+          </a>
+        </li>
+        <li>
+          <a href="dashboard_plogs.html">
+            <i class="fas fa-pen"></i>
+            <p>posts</p>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-star"></i>
+            <p>favorite</p>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-cog"></i>
+            <p>settings</p>
+          </a>
+        </li>
+
+        <!-- logout -->
+        <li class="log-out">
+          <a href="#">
+            <i class="fas fa-sign-out"></i>
+            <p>log out</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="content">
+      <div class="title-info">
+        <p>dashboard</p>
+        <i class="fas fa-chart-bar"></i>
+      </div>
+      <div class="data-info">
+        <div class="box">
+          <i class="fas fa-user"></i>
+          <div class="data">
+            <p>user</p>
+            <span class="user_count">100</span>
+          </div>
+        </div>
+        <div class="box">
+          <i class="fas fa-pen"></i>
+          <div class="data">
+            <p>posts</p>
+            <span class="post_count">260</span>
+          </div>
+        </div>
+        <div class="box">
+          <i class="fas fa-table"></i>
+          <div class="data">
+            <p>products</p>
+            <span>130</span>
+          </div>
+        </div>
+        <div class="box">
+          <i class="fas fa-dollar"></i>
+          <div class="data">
+            <p>revenwe</p>
+            <span>82%</span>
+          </div>
+        </div>
+      </div>
+      <div class="title-info">
+        <p>products</p>
+        <i class="fas fa-table"></i>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>product</th>
+            <th>price</th>
+            <th>count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>tv</td>
+            <td><span class="price">$123</span></td>
+            <td><span class="count">265</span></td>
+          </tr>
+          <tr>
+            <td>tv</td>
+            <td><span class="price">$123</span></td>
+            <td><span class="count">265</span></td>
+          </tr>
+          <tr>
+            <td>tv</td>
+            <td><span class="price">$123</span></td>
+            <td><span class="count">265</span></td>
+          </tr>
+          <tr>
+            <td>tv</td>
+            <td><span class="price">$123</span></td>
+            <td><span class="count">265</span></td>
+          </tr>
+          <tr>
+            <td>tv</td>
+            <td><span class="price">$123</span></td>
+            <td><span class="count">265</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Authentication Script -->
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/dashboard/dashboard.js"></script>
+    <script>
+      // Check authentication and role on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        const userStr = localStorage.getItem("user");
+
+        if (!userStr) {
+          // Not logged in, redirect to login
+          alert("Please login to access the dashboard");
+          window.location.href = "login.html";
+          return;
+        }
+
+        const user = JSON.parse(userStr);
+
+        // Check if user has admin or owner role
+        if (user.role !== "admin" && user.role !== "owner") {
+          // Not authorized, redirect to home
+          alert("Access denied. Admin or Owner role required.");
+          window.location.href = "index.html";
+          return;
+        }
+
+        // Update profile name if element exists
+        const profileName = document.querySelector(".profile h2");
+        if (profileName && user.name) {
+          profileName.textContent = user.name;
+        }
+      });
+    </script>
+  </body>
+</html>

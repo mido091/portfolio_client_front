@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="assets/css/dashboard_plogs.css" />
+    <title>Blogs Management - Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="menu">
+      <ul>
+        <li class="profile">
+          <div class="img-box">
+            <img
+              src="Image/cheerful_man_with_hands_crossed_transparent_background_g_1_3_1.jpg"
+              alt="image profile"
+            />
+          </div>
+          <h2>Ahmed kaoud</h2>
+        </li>
+        <hr />
+        <li>
+          <a href="dashboard.html">
+            <i class="fas fa-home"></i>
+            <p>dashboard</p>
+          </a>
+        </li>
+        <li>
+          <a href="dashboard_users.html">
+            <i class="fas fa-user-group"></i>
+            <p>clients</p>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-table"></i>
+            <p>products</p>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-chart-pie"></i>
+            <p>charts</p>
+          </a>
+        </li>
+        <li>
+          <a class="active" href="dashboard_plogs.html">
+            <i class="fas fa-pen"></i>
+            <p>posts</p>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-star"></i>
+            <p>favorite</p>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fas fa-cog"></i>
+            <p>settings</p>
+          </a>
+        </li>
+        <li class="log-out">
+          <a href="#">
+            <i class="fas fa-sign-out"></i>
+            <p>log out</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="content">
+      <div class="title-info">
+        <p>Blogs Management</p>
+        <i class="fas fa-pen"></i>
+      </div>
+
+      <!-- Blog Form Section -->
+      <div class="blog-form-container">
+        <h3 id="formTitle">Create New Blog</h3>
+        <form id="blogForm" enctype="multipart/form-data">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="blogHeader"
+                >Header <span class="required">*</span></label
+              >
+              <input type="text" id="blogHeader" name="header" required />
+            </div>
+            <div class="form-group">
+              <label for="blogTitle"
+                >Title <span class="required">*</span></label
+              >
+              <input type="text" id="blogTitle" name="title" required />
+            </div>
+            <div class="form-group full-width">
+              <label for="blogDescription"
+                >Description <span class="required">*</span></label
+              >
+              <textarea
+                id="blogDescription"
+                name="description"
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="blogFooter"
+                >Footer (Author Info) <span class="required">*</span></label
+              >
+              <input type="text" id="blogFooter" name="footer" required />
+            </div>
+            <div class="form-group">
+              <label for="blogImage"
+                >Image <span class="required">*</span></label
+              >
+              <input type="file" id="blogImage" name="image" accept="image/*" />
+              <small class="form-hint"
+                >Upload a new image or keep existing one when editing</small
+              >
+            </div>
+          </div>
+
+          <!-- Image Preview -->
+          <div
+            id="imagePreviewContainer"
+            class="image-preview-container"
+            style="display: none"
+          >
+            <label>Image Preview:</label>
+            <div class="image-preview-wrapper">
+              <img id="imagePreview" src="" alt="Preview" />
+              <button
+                type="button"
+                class="btn-remove-preview"
+                id="removePreview"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              <i class="fas fa-plus"></i> Create Blog
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="cancelBtn"
+              style="display: none"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Blogs Table Section -->
+      <div class="title-info">
+        <p>All Blogs</p>
+        <i class="fas fa-blog"></i>
+      </div>
+
+      <div class="table-container">
+        <table id="blogsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Header</th>
+              <th>Title</th>
+              <th>Image</th>
+              <th>Created At</th>
+              <th>Updated At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="blogsTableBody">
+            <tr>
+              <td colspan="7" class="loading-cell">
+                <i class="fas fa-spinner fa-spin"></i> Loading blogs...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Authentication Script -->
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/dashboard/dashboard.js"></script>
+    <script src="assets/js/dashboard_plogs.js"></script>
+  </body>
+</html>
