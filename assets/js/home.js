@@ -199,7 +199,35 @@ document.querySelectorAll(".logos").forEach(logos => {
 
 
 
+console.log("JS Loaded ✔");
 
+const menuIcon = document.querySelector(".menu_screen i");
+const menuList = document.querySelector(".menu_screen_list");
+
+console.log("menuIcon:", menuIcon);
+console.log("menuList:", menuList);
+
+menuIcon?.addEventListener("click", () => {
+    console.log("Clicked!");
+    
+    if(getComputedStyle(menuList).display === "none"){
+        menuList.style.display = "flex";
+    } else {
+        menuList.style.display = "none";
+    }
+});
+
+
+const menuLis = document.querySelector(".menu_screen_list");
+
+const observer = new MutationObserver(() => {
+    const firstDynamic = menuLis.querySelector(".dynamic-auth-link");
+    if(firstDynamic){
+        firstDynamic.style.marginLeft = "-36px";
+    }
+});
+
+observer.observe(menuList, { childList: true, subtree: true });
 
 // // ارسال الرسائل للباك اند
 // document.getElementById('contactForm').addEventListener('submit', async (e) => {

@@ -18,6 +18,10 @@ const usersTableBody = document.getElementById("usersTableBody");
 const submitBtn = document.getElementById("submitBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const formTitle = document.getElementById("formTitle");
+const imageInput = document.getElementById("userImage");
+const imagePreview = document.getElementById("imagePreview");
+const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+const clearImageBtn = document.getElementById("clearImageBtn");
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", function () {
@@ -77,6 +81,51 @@ function checkAuthAndRole() {
 function setupEventListeners() {
   userForm.addEventListener("submit", handleFormSubmit);
   cancelBtn.addEventListener("click", resetForm);
+
+  // Image upload handling
+  if (imageInput) {
+    imageInput.addEventListener("change", handleImageSelect);
+  }
+
+  if (clearImageBtn) {
+    clearImageBtn.addEventListener("click", clearImagePreview);
+  }
+}
+
+// Handle Image Selection
+function handleImageSelect(e) {
+  const file = e.target.files[0];
+
+  if (file) {
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file");
+      imageInput.value = "";
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image size must be less than 5MB");
+      imageInput.value = "";
+      return;
+    }
+
+    // Show preview
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      imagePreview.src = e.target.result;
+      imagePreviewContainer.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// Clear Image Preview
+function clearImagePreview() {
+  imageInput.value = "";
+  imagePreview.src = "";
+  imagePreviewContainer.style.display = "none";
 }
 
 // Load Users from API
@@ -126,7 +175,7 @@ function displayUsers(users) {
   if (users.length === 0) {
     usersTableBody.innerHTML = `
       <tr>
-        <td colspan="5" class="empty-state">
+        <td colspan="6" class="empty-state">
           <i class="fas fa-users-slash"></i>
           <p>No users found</p>
         </td>
@@ -136,10 +185,20 @@ function displayUsers(users) {
   }
 
   usersTableBody.innerHTML = users
-    .map(
-      (user, index) => `
+    .map((user, index) => {
+      // Use user image or default
+      const userImage =
+        user.image ||
+        "https://res.cloudinary.com/ddqlt5oqu/image/upload/v1764967019/default_pi1ur8.webp";
+
+      return `
     <tr>
       <td>${index + 1}</td>
+      <td>
+        <img src="${userImage}" alt="${user.name || "User"}" 
+             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;" 
+             onerror="this.src='https://res.cloudinary.com/ddqlt5oqu/image/upload/v1764967019/default_pi1ur8.webp'" />
+      </td>
       <td>${user.name || user.username || "N/A"}</td>
       <td>${user.email}</td>
       <td><span class="role-badge role-${user.role}">${user.role}</span></td>
@@ -149,8 +208,8 @@ function displayUsers(users) {
         </div>
       </td>
     </tr>
-  `
-    )
+  `;
+    })
     .join("");
 }
 
@@ -158,10 +217,11 @@ function displayUsers(users) {
 function getActionButtons(user) {
   // If current user is owner, show Edit and Delete buttons
   if (currentUser.role === "owner") {
+    const userImage = user.image || "";
     return `
       <button class="btn btn-success" onclick="editUser(${user.id}, '${
       user.name || user.username
-    }', '${user.email}', '${user.role}')">
+    }', '${user.email}', '${user.role}', '${userImage}')">
         <i class="fas fa-edit"></i> Edit
       </button>
       <button class="btn btn-danger" onclick="deleteUser(${user.id}, '${
@@ -188,12 +248,18 @@ function getActionButtons(user) {
 async function handleFormSubmit(e) {
   e.preventDefault();
 
-  const formData = {
-    name: document.getElementById("userName").value.trim(),
-    email: document.getElementById("userEmail").value.trim(),
-    password: document.getElementById("userPassword").value,
-    role: document.getElementById("userRole").value,
-  };
+  // Create FormData to handle file upload
+  const formData = new FormData();
+  formData.append("name", document.getElementById("userName").value.trim());
+  formData.append("email", document.getElementById("userEmail").value.trim());
+  formData.append("password", document.getElementById("userPassword").value);
+  formData.append("role", document.getElementById("userRole").value);
+
+  // Add image if selected
+  const imageFile = imageInput.files[0];
+  if (imageFile) {
+    formData.append("image", imageFile);
+  }
 
   if (isEditMode) {
     await updateUser(currentEditingUserId, formData);
@@ -203,7 +269,7 @@ async function handleFormSubmit(e) {
 }
 
 // Create User
-async function createUser(userData) {
+async function createUser(formData) {
   const token = localStorage.getItem("token");
 
   try {
@@ -213,10 +279,10 @@ async function createUser(userData) {
     const response = await fetch(API_ENDPOINTS.register, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        // Don't set Content-Type - browser will set it with boundary for multipart/form-data
       },
-      body: JSON.stringify(userData),
+      body: formData,
     });
 
     const data = await response.json();
@@ -273,7 +339,7 @@ async function updateUser(userId, userData) {
 }
 
 // Edit User (Fill form with user data)
-function editUser(userId, name, email, role) {
+function editUser(userId, name, email, role, imageUrl) {
   isEditMode = true;
   currentEditingUserId = userId;
 
@@ -281,6 +347,14 @@ function editUser(userId, name, email, role) {
   document.getElementById("userEmail").value = email;
   document.getElementById("userPassword").value = "";
   document.getElementById("userRole").value = role;
+
+  // Show existing image if available
+  if (imageUrl && imageUrl !== "null" && imageUrl !== "") {
+    imagePreview.src = imageUrl;
+    imagePreviewContainer.style.display = "block";
+  } else {
+    clearImagePreview();
+  }
 
   formTitle.textContent = "Update User";
   submitBtn.innerHTML = '<i class="fas fa-save"></i> Update User';
@@ -336,4 +410,7 @@ function resetForm() {
   formTitle.textContent = "Create New User";
   submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create User';
   cancelBtn.style.display = "none";
+
+  // Clear image preview
+  clearImagePreview();
 }

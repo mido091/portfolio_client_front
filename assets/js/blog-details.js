@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Description
-      descEl.textContent = blog.description;
+      descEl.innerHTML = blog.description;
 
       // Footer / Author
       footerEl.textContent = blog.footer || "Unknown Author";

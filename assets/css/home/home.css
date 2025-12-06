@@ -803,6 +803,45 @@
   overflow: hidden;
 }
 
+/* Tablet breakpoint - 1024px */
+@media screen and (max-width: 1024px) {
+  .home {
+    padding: 14rem 7% 12rem;
+  }
+  .home .home-info .left h1 {
+    font-size: 4.2em;
+  }
+  .home .home-info .left h3 {
+    font-size: 2.3em;
+  }
+  .home .home-info .left h4 {
+    font-size: 2em;
+  }
+  .home .home-info .right .profile img {
+    width: 420px;
+    height: 420px;
+  }
+  .about .about-wrapper {
+    gap: 5em;
+  }
+  .about .about-wrapper .about-left .about-img img {
+    width: 380px;
+    height: 380px;
+  }
+  .services .services-wrapper .box {
+    width: 350px;
+    height: 580px;
+  }
+  .container_portfolio .portfolio-wrapper .portfolio-box {
+    width: 360px;
+    height: 460px;
+  }
+  .contact form .input-box input {
+    width: 49%;
+  }
+}
+
+/* Desktop Large breakpoint - 1280px */
 @media screen and (max-width: 1280px) {
   .home .home-info .left h1 {
     font-size: 4em;
@@ -949,6 +988,9 @@
   .contact form .input-box input {
     width: 100%;
   }
+  .logo-container {
+    width: 90%;
+  }
   .footer {
     padding: 1.2em 5%;
   }
@@ -963,3 +1005,48 @@
     margin-bottom: 1em;
   }
 }/*# sourceMappingURL=home.css.map */
+
+
+.menu_screen{
+    position: relative;
+    cursor: pointer;
+    display: none;
+}
+
+/* قائمة المينيو */
+.menu_screen_list{
+    position: absolute;
+    top: calc(100% + 20px);
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background: var(--mob-color);
+    padding: 20px 100px;
+    gap: 30px;
+    transition: 0.3s ease;
+    border-radius: 8px;
+
+}
+
+.list-darkmode-menu{
+  .active{
+    margin-top: -30px;
+    gap: 10px;
+    z-index: 1;
+  }
+}
+
+
+/* تظهر فقط من الشاشات 992+ */
+@media (min-width:992px){
+  .menu_screen{
+    display: block;
+    padding: 0 10px;
+  }
+  .heddin{
+    display: none;
+  }
+}

@@ -29,23 +29,5 @@ fetch("https://portfolio-client-server.vercel.app/api/plogs", {
   })
   .catch((err) => console.log(err));
 
-// Universal Logout Functionality
-// Works on all dashboard pages
-document.addEventListener("DOMContentLoaded", function () {
-  const logoutElements = document.querySelectorAll(".log-out");
-
-  logoutElements.forEach(function (logoutElement) {
-    logoutElement.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      // Clear all login-related data from localStorage
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("role");
-      localStorage.removeItem("username");
-
-      // Redirect to home page
-      window.location.href = "index.html";
-    });
-  });
-});
+// Logout functionality is now handled by logout-modal.js
+// The modal provides a confirmation dialog before logging out

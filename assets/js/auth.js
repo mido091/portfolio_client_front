@@ -77,19 +77,48 @@ function updateHeaderForAuth() {
       margin-right: 20px;
     `;
 
-    // Add user name display
-    const userName = document.createElement("span");
+    // Add user image
+    const userImage = document.createElement("img");
+    userImage.className = "user-avatar";
+    userImage.src =
+      user.image ||
+      "https://res.cloudinary.com/ddqlt5oqu/image/upload/v1764967019/default_pi1ur8.webp";
+    userImage.alt = user.name || user.username || "User";
+    userImage.style.cssText = `
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--color);
+    `;
+    userImage.onerror = function () {
+      this.src =
+        "https://res.cloudinary.com/ddqlt5oqu/image/upload/v1764967019/default_pi1ur8.webp";
+    };
+
+    // Add user name display (Link to Profile)
+    const userName = document.createElement("a");
+    userName.href = "profile.html";
     userName.className = "user-name";
     userName.textContent = user.name || user.username || user.email;
     userName.style.cssText = `
       color: var(--first);
       font-size: 16px;
       font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.3s ease;
     `;
+    userName.addEventListener("mouseenter", function () {
+      this.style.color = "var(--first-color-alt)";
+    });
+    userName.addEventListener("mouseleave", function () {
+      this.style.color = "var(--first)";
+    });
 
     // Add logout button
     const logoutBtn = document.createElement("button");
-    logoutBtn.className = "logout-btn";
+    logoutBtn.className = "logout-btn logout-trigger"; // Add logout-trigger class for modal
     logoutBtn.textContent = "Logout";
     logoutBtn.style.cssText = `
       padding: 8px 16px;
@@ -110,8 +139,9 @@ function updateHeaderForAuth() {
       this.style.color = "#fff";
       this.style.background = "var(--color)";
     });
-    logoutBtn.addEventListener("click", logout);
+    // Logout is now handled by logout-modal.js via the logout-trigger class
 
+    userInfo.appendChild(userImage);
     userInfo.appendChild(userName);
     userInfo.appendChild(logoutBtn);
 

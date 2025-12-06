@@ -31,6 +31,8 @@
         <meta property="og:description" content="">
         <meta property="og:url" content="">
         <meta property="og:type" content="">
+        <!-- Logout Modal CSS -->
+        <link rel="stylesheet" href="assets/css/logout-modal.css" />
     </head>
     <body>
         <!-- header -->
@@ -47,26 +49,26 @@
               <ul style="display:flex; align-items:center; gap:15px; list-style:none;">
 
     <li><a href="index.html">Home</a></li>
+    <li><a href="list_experiences.html">Services</a></li>
+    <li><a href="list_skills.html">Skills</a></li>
+    <li class="heddin"><a href="list_work.html">Portfolio</a></li>
+    <li ><a href="blogs.html">Plogs</a></li>
+    <li class="heddin"><a href="#contact">Contact</a></li>
+     <li class="heddin"><a href="about.html">About</a></li>
 
-   
+     <!-- menu screen -->
+           <!-- menu screen -->
+<div class="menu_screen">
+    <i class="fa fa-bars" aria-hidden="true" style="color: white;"></i>
 
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="blogs.html">Plogs</a></li>
-     <!-- Mega Menu -->
-    <li style="position:relative;">
-        <a href="#" id="seeMoreBtn" style="cursor:pointer;">See More ▾</a>
+    <ul class="menu_screen_list" style="display:none;">
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="list_work.html">Portfolio</a></li>
+    </ul>
+</div>
 
-        <!-- Hidden Content -->
-        <ul id="seeMoreMenu"
-            style="position:absolute; top:100%; left:0; display:none; flex-direction:column; gap:10px; padding:10px; 
-            min-width:150px; border:1px solid; background:inherit; backdrop-filter:blur(5px); z-index:999;">
-            
-            <li><a href="about.html">About</a></li>
-            <li><a href="list_experiences.html">Services</a></li>
-            <li><a href="list_skills.html">Skills</a></li>
-            <li><a href="list_work.html">Portfolio</a></li>
-        </ul>
-    </li>
+    
 </ul>
 
                 <!-- زر الوضع -->
@@ -679,6 +681,8 @@
         <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
         <!-- ملف جافا سكريبت للمصادقة -->
         <script src="assets/js/auth.js"></script>
+        <!-- Logout Modal Script -->
+        <script src="assets/js/logout-modal.js"></script>
 <script>
     const seeMoreBtn = document.getElementById("seeMoreBtn");
     const seeMoreMenu = document.getElementById("seeMoreMenu");
@@ -695,7 +699,106 @@
             seeMoreMenu.style.display = "none";
         }
     });
+
+
+
+    //
+
+
+
+    
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Delay to ensure auth.js elements are present before we manipulate them
+        setTimeout(() => {
+            const menuScreenList = document.querySelector(".menu_screen_list");
+            const mobileMenuUl = document.querySelector(".list-darkmode-menu ul");
+            
+            function updateMenuLinks() {
+                const isDesktop = window.innerWidth >= 992;
+                const token = localStorage.getItem("token");
+                const user = JSON.parse(localStorage.getItem("user") || "null");
+
+                // 1. Hide auth.js generated elements (we manage auth links manually now for both views)
+                const authJsElements = document.querySelectorAll("header nav .user-info, header nav .login-link");
+                authJsElements.forEach(el => el.style.display = "none");
+
+                // 2. Clear OUR previously injected links to prevent duplication
+                document.querySelectorAll(".dynamic-auth-link").forEach(el => el.remove());
+
+                const defaultImg = "https://res.cloudinary.com/ddqlt5oqu/image/upload/v1764967019/default_pi1ur8.webp";
+                const imgSrc = (user && user.image) ? user.image : defaultImg;
+                
+                let html = "";
+                
+                if (isDesktop) {
+                    // --- DESKTOP VIEW (>= 992px) ---
+                    // Inject into .menu_screen_list
+                    
+                    if (token) {
+                        html += `
+                            <li class="dynamic-auth-link" style="display:flex; align-items:center; gap:10px;">
+                                <img src="${imgSrc}" alt="Profile" style="width:30px; height:30px; border-radius:50%; object-fit:cover; border:2px solid var(--color);">
+                                <a href="profile.html">Profile</a>
+                            </li>
+                            <li class="dynamic-auth-link"><a href="#" id="desktop-logout">Logout</a></li>
+                        `;
+                    } else {
+                        html += `<li class="dynamic-auth-link"><a href="login.html">Login</a></li>`;
+                    }
+                    
+                    if (menuScreenList) {
+                        menuScreenList.insertAdjacentHTML('beforeend', html);
+                    }
+                    
+                    if (token) {
+                        document.getElementById("desktop-logout")?.addEventListener("click", handleLogout);
+                    }
+
+                } else {
+                    // --- MOBILE VIEW (< 992px) ---
+                    // Inject into .list-darkmode-menu ul (the active slide menu)
+                    
+                    if (token) {
+                         // Using inline flex to align image and text nicely in the mobile list
+                        html += `
+                            <li class="dynamic-auth-link mobile-link" style="display:flex; align-items:center; gap:10px; margin-top: 10px;">
+                                <img src="${imgSrc}" alt="Profile" style="width:30px; height:30px; border-radius:50%; object-fit:cover; border:2px solid var(--color);">
+                                <a href="profile.html">Profile</a>
+                            </li>
+                            <li class="dynamic-auth-link mobile-link"><a href="#" id="mobile-logout">Logout</a></li>
+                        `;
+                    } else {
+                        html += `<li class="dynamic-auth-link mobile-link"><a href="login.html">Login</a></li>`;
+                    }
+
+                    if (mobileMenuUl) {
+                        mobileMenuUl.insertAdjacentHTML('beforeend', html);
+                    }
+
+                    if (token) {
+                        document.getElementById("mobile-logout")?.addEventListener("click", handleLogout);
+                    }
+                }
+            }
+
+            function handleLogout(e) {
+                e.preventDefault();
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "index.html";
+            }
+
+            // Initial Run
+            updateMenuLinks();
+
+            // Resize Listener
+            window.addEventListener("resize", updateMenuLinks);
+            
+        }, 100); // 100ms delay to be safe
+    });
+</script>
     </body>
 </html>

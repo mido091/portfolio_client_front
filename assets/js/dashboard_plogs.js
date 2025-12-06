@@ -10,20 +10,33 @@ let currentUser = null;
 let currentEditingBlogId = null;
 let isEditMode = false;
 let currentImageUrl = null;
+let quill = null; // Quill editor instance
 
-// DOM Elements
-const blogForm = document.getElementById("blogForm");
-const blogsTableBody = document.getElementById("blogsTableBody");
-const submitBtn = document.getElementById("submitBtn");
-const cancelBtn = document.getElementById("cancelBtn");
-const formTitle = document.getElementById("formTitle");
-const imageInput = document.getElementById("blogImage");
-const imagePreview = document.getElementById("imagePreview");
-const imagePreviewContainer = document.getElementById("imagePreviewContainer");
-const removePreviewBtn = document.getElementById("removePreview");
+// DOM Elements (will be initialized in DOMContentLoaded)
+let blogForm = null;
+let blogsTableBody = null;
+let submitBtn = null;
+let cancelBtn = null;
+let formTitle = null;
+let imageInput = null;
+let imagePreview = null;
+let imagePreviewContainer = null;
+let removePreviewBtn = null;
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", function () {
+  // Initialize DOM elements
+  blogForm = document.getElementById("blogForm");
+  blogsTableBody = document.getElementById("blogsTableBody");
+  submitBtn = document.getElementById("submitBtn");
+  cancelBtn = document.getElementById("cancelBtn");
+  formTitle = document.getElementById("formTitle");
+  imageInput = document.getElementById("blogImage");
+  imagePreview = document.getElementById("imagePreview");
+  imagePreviewContainer = document.getElementById("imagePreviewContainer");
+  removePreviewBtn = document.getElementById("removePreview");
+
+  initializeQuill();
   checkAuthAndRole();
   setupEventListeners();
 });
@@ -58,12 +71,66 @@ function checkAuthAndRole() {
   loadBlogs();
 }
 
+// Initialize Quill Editor
+function initializeQuill() {
+  const editorElement = document.getElementById("editor");
+  if (!editorElement) {
+    console.error("Editor element not found");
+    return;
+  }
+
+  quill = new Quill("#editor", {
+    theme: "snow",
+    placeholder: "Write your blog description here...",
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ color: [] }, { background: [] }],
+        [{ align: [] }],
+        ["link", "image"],
+        ["clean"],
+      ],
+    },
+  });
+
+  // Set default text color to black for visibility
+  quill.format("color", "#000");
+}
+
 // Setup Event Listeners
 function setupEventListeners() {
-  blogForm.addEventListener("submit", handleFormSubmit);
-  cancelBtn.addEventListener("click", resetForm);
-  imageInput.addEventListener("change", handleImagePreview);
-  removePreviewBtn.addEventListener("click", removeImagePreview);
+  if (blogForm) blogForm.addEventListener("submit", handleFormSubmit);
+  if (cancelBtn) cancelBtn.addEventListener("click", resetForm);
+  if (imageInput) imageInput.addEventListener("change", handleImagePreview);
+  if (removePreviewBtn)
+    removePreviewBtn.addEventListener("click", removeImagePreview);
+
+  // Event delegation for dynamically created edit and delete buttons
+  document.addEventListener("click", function (e) {
+    // Handle Edit button click
+    if (e.target.closest(".btn-edit-blog")) {
+      const btn = e.target.closest(".btn-edit-blog");
+      const blogId = btn.dataset.id;
+      const header = btn.dataset.header;
+      const title = btn.dataset.title;
+      const description = btn.dataset.description;
+      const footer = btn.dataset.footer;
+      const image = btn.dataset.image;
+
+      editBlog(blogId, header, title, description, footer, image);
+    }
+
+    // Handle Delete button click
+    if (e.target.closest(".btn-delete-blog")) {
+      const btn = e.target.closest(".btn-delete-blog");
+      const blogId = btn.dataset.id;
+      const header = btn.dataset.header;
+
+      deleteBlog(blogId, header);
+    }
+  });
 }
 
 // Handle Image Preview
@@ -72,8 +139,8 @@ function handleImagePreview(e) {
   if (file) {
     const reader = new FileReader();
     reader.onload = function (e) {
-      imagePreview.src = e.target.result;
-      imagePreviewContainer.style.display = "block";
+      if (imagePreview) imagePreview.src = e.target.result;
+      if (imagePreviewContainer) imagePreviewContainer.style.display = "block";
     };
     reader.readAsDataURL(file);
   }
@@ -81,9 +148,9 @@ function handleImagePreview(e) {
 
 // Remove Image Preview
 function removeImagePreview() {
-  imageInput.value = "";
-  imagePreview.src = "";
-  imagePreviewContainer.style.display = "none";
+  if (imageInput) imageInput.value = "";
+  if (imagePreview) imagePreview.src = "";
+  if (imagePreviewContainer) imagePreviewContainer.style.display = "none";
   currentImageUrl = null;
 }
 
@@ -117,19 +184,23 @@ async function loadBlogs() {
     displayBlogs(blogs);
   } catch (error) {
     console.error("Error loading blogs:", error);
-    blogsTableBody.innerHTML = `
-      <tr>
-        <td colspan="7" class="empty-state">
-          <i class="fas fa-exclamation-triangle"></i>
-          <p>Failed to load blogs. Please try again.</p>
-        </td>
-      </tr>
-    `;
+    if (blogsTableBody) {
+      blogsTableBody.innerHTML = `
+        <tr>
+          <td colspan="7" class="empty-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Failed to load blogs. Please try again.</p>
+          </td>
+        </tr>
+      `;
+    }
   }
 }
 
 // Display Blogs in Table
 function displayBlogs(blogs) {
+  if (!blogsTableBody) return;
+
   if (blogs.length === 0) {
     blogsTableBody.innerHTML = `
       <tr>
@@ -143,12 +214,22 @@ function displayBlogs(blogs) {
   }
 
   blogsTableBody.innerHTML = blogs
-    .map(
-      (blog, index) => `
+    .map((blog, index) => {
+      // Store the actual data in a way that won't break HTML attributes
+      const blogData = {
+        id: blog.id,
+        header: blog.header || "",
+        title: blog.title || "",
+        description: blog.description || "",
+        footer: blog.footer || "",
+        image: blog.image || "",
+      };
+
+      return `
     <tr>
       <td>${index + 1}</td>
-      <td>${blog.header || "N/A"}</td>
-      <td>${blog.title || "N/A"}</td>
+      <td>${escapeHtml(blog.header) || "N/A"}</td>
+      <td>${escapeHtml(blog.title) || "N/A"}</td>
       <td>
         ${
           blog.image
@@ -160,25 +241,29 @@ function displayBlogs(blogs) {
       <td><span class="date-display">${formatDate(blog.updated_at)}</span></td>
       <td>
         <div class="action-buttons">
-          <button class="btn btn-success" onclick="editBlog(${
-            blog.id
-          }, '${escapeHtml(blog.header)}', '${escapeHtml(
-        blog.title
-      )}', '${escapeHtml(blog.description)}', '${escapeHtml(
-        blog.footer || ""
-      )}', '${blog.image || ""}')">
+          <button 
+            class="btn btn-success btn-edit-blog" 
+            data-id="${blogData.id}"
+            data-header="${escapeForAttribute(blogData.header)}"
+            data-title="${escapeForAttribute(blogData.title)}"
+            data-description="${escapeForAttribute(blogData.description)}"
+            data-footer="${escapeForAttribute(blogData.footer)}"
+            data-image="${escapeForAttribute(blogData.image)}"
+          >
             <i class="fas fa-edit"></i> Edit
           </button>
-          <button class="btn btn-danger" onclick="deleteBlog(${
-            blog.id
-          }, '${escapeHtml(blog.header)}')">
+          <button 
+            class="btn btn-danger btn-delete-blog" 
+            data-id="${blogData.id}"
+            data-header="${escapeForAttribute(blogData.header)}"
+          >
             <i class="fas fa-trash"></i> Delete
           </button>
         </div>
       </td>
     </tr>
-  `
-    )
+  `;
+    })
     .join("");
 }
 
@@ -198,7 +283,26 @@ function escapeHtml(text) {
   if (!text) return "";
   const div = document.createElement("div");
   div.textContent = text;
-  return div.innerHTML.replace(/'/g, "&#39;");
+  return div.innerHTML;
+}
+
+// Escape for HTML attributes (for data attributes)
+function escapeForAttribute(text) {
+  if (!text) return "";
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+// Unescape HTML entities
+function unescapeHtml(text) {
+  if (!text) return "";
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = text;
+  return textarea.value;
 }
 
 // Handle Form Submit (Create or Update)
@@ -208,11 +312,16 @@ async function handleFormSubmit(e) {
   // Validate form
   const header = document.getElementById("blogHeader").value.trim();
   const title = document.getElementById("blogTitle").value.trim();
-  const description = document.getElementById("blogDescription").value.trim();
+  const description = quill.root.innerHTML.trim(); // Get HTML from Quill
   const footer = document.getElementById("blogFooter").value.trim();
   const imageFile = imageInput.files[0];
 
-  if (!header || !title || !description || !footer) {
+  // Check if Quill editor is empty (only contains <p><br></p> or similar)
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = description;
+  const textContent = tempDiv.textContent || tempDiv.innerText || "";
+
+  if (!header || !title || !textContent.trim() || !footer) {
     alert("Please fill in all required fields");
     return;
   }
@@ -242,8 +351,11 @@ async function createBlog(header, title, description, footer, imageFile) {
   const token = localStorage.getItem("token");
 
   try {
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Creating...';
+    }
 
     const formData = new FormData();
     formData.append("header", header);
@@ -273,8 +385,10 @@ async function createBlog(header, title, description, footer, imageFile) {
     console.error("Error creating blog:", error);
     alert(`Error: ${error.message}`);
   } finally {
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = '<i class="fas fa-plus"></i> Create Blog';
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-plus"></i> Create Blog';
+    }
   }
 }
 
@@ -290,8 +404,11 @@ async function updateBlog(
   const token = localStorage.getItem("token");
 
   try {
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Updating...';
+    }
 
     const formData = new FormData();
     formData.append("header", header);
@@ -325,8 +442,10 @@ async function updateBlog(
     console.error("Error updating blog:", error);
     alert(`Error: ${error.message}`);
   } finally {
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = '<i class="fas fa-plus"></i> Create Blog';
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-plus"></i> Create Blog';
+    }
   }
 }
 
@@ -336,35 +455,39 @@ function editBlog(blogId, header, title, description, footer, imageUrl) {
   currentEditingBlogId = blogId;
   currentImageUrl = imageUrl;
 
-  // Decode HTML entities
-  const decodeHtml = (html) => {
-    const txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
-  };
+  const headerInput = document.getElementById("blogHeader");
+  const titleInput = document.getElementById("blogTitle");
+  const footerInput = document.getElementById("blogFooter");
 
-  document.getElementById("blogHeader").value = decodeHtml(header);
-  document.getElementById("blogTitle").value = decodeHtml(title);
-  document.getElementById("blogDescription").value = decodeHtml(description);
-  document.getElementById("blogFooter").value = decodeHtml(footer);
+  // Unescape HTML entities from data attributes
+  if (headerInput) headerInput.value = unescapeHtml(header);
+  if (titleInput) titleInput.value = unescapeHtml(title);
+
+  // Set Quill content with unescaped HTML
+  if (quill) {
+    const unescapedDescription = unescapeHtml(description);
+    quill.root.innerHTML = unescapedDescription;
+  }
+
+  if (footerInput) footerInput.value = unescapeHtml(footer);
 
   // Show existing image if available
   if (imageUrl) {
-    imagePreview.src = imageUrl;
-    imagePreviewContainer.style.display = "block";
+    if (imagePreview) imagePreview.src = imageUrl;
+    if (imagePreviewContainer) imagePreviewContainer.style.display = "block";
   }
 
   // Clear file input but keep preview
-  imageInput.value = "";
+  if (imageInput) imageInput.value = "";
 
-  formTitle.textContent = "Update Blog";
-  submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Blog';
-  cancelBtn.style.display = "inline-flex";
+  if (formTitle) formTitle.textContent = "Update Blog";
+  if (submitBtn)
+    submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Blog';
+  if (cancelBtn) cancelBtn.style.display = "inline-flex";
 
   // Scroll to form
-  document
-    .querySelector(".blog-form-container")
-    .scrollIntoView({ behavior: "smooth" });
+  const formContainer = document.querySelector(".blog-form-container");
+  if (formContainer) formContainer.scrollIntoView({ behavior: "smooth" });
 }
 
 // Delete Blog
@@ -402,9 +525,16 @@ function resetForm() {
   currentEditingBlogId = null;
   currentImageUrl = null;
 
-  blogForm.reset();
+  if (blogForm) blogForm.reset();
+
+  // Clear Quill editor
+  if (quill) {
+    quill.setContents([]);
+  }
+
   removeImagePreview();
-  formTitle.textContent = "Create New Blog";
-  submitBtn.innerHTML = '<i class="fas fa-plus"></i> Create Blog';
-  cancelBtn.style.display = "none";
+  if (formTitle) formTitle.textContent = "Create New Blog";
+  if (submitBtn)
+    submitBtn.innerHTML = '<i class="fas fa-plus"></i> Create Blog';
+  if (cancelBtn) cancelBtn.style.display = "none";
 }

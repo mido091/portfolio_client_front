@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile - Ahmed Kaoud</title>
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="assets/css/all.css/all.css" />
+    <link rel="stylesheet" href="assets/css/home/home.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+    <!-- Profile CSS -->
+    <link rel="stylesheet" href="assets/css/profile.css" />
+    <!-- Logout Modal CSS -->
+    <link rel="stylesheet" href="assets/css/logout-modal.css" />
+  </head>
+  <body>
+    <!-- Header (Same as index.html) -->
+    <header>
+      <div class="container">
+        <nav>
+          <!-- Logo -->
+          <div class="logo">
+            <a href="index.html">Ahmed<span>Kaoud</span></a>
+          </div>
+          <!-- list-darkmode-menu -->
+          <div class="list-darkmode-menu">
+            <!-- list -->
+            <ul
+              style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                list-style: none;
+              "
+            >
+              <li><a href="index.html">Home</a></li>
+              <li><a href="blogs.html">Plogs</a></li>
+            </ul>
+
+            <!-- Dark Mode & Menu Buttons -->
+            <label class="mode">
+              <input type="checkbox" checked="checked" id="darkModeButton" />
+              <i class="fa-solid fa-sun"></i>
+              <i class="fa-solid fa-moon"></i>
+            </label>
+            <button class="hamburger">
+              <div class="bar"></div>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+      <div class="container">
+        <div class="profile-container">
+          <div class="profile-header">
+            <h2>My Profile</h2>
+            <p>Manage your account settings and preferences</p>
+          </div>
+
+          <form id="profileForm" class="profile-form">
+            <!-- Profile Image -->
+            <div class="profile-image-container">
+              <div class="image-wrapper">
+                <img
+                  id="profileImagePreview"
+                  src="https://res.cloudinary.com/ddqlt5oqu/image/upload/v1764967019/default_pi1ur8.webp"
+                  alt="Profile"
+                />
+                <label for="imageInput" class="upload-overlay">
+                  <i class="fas fa-camera"></i>
+                  <span>Change</span>
+                </label>
+              </div>
+              <input
+                type="file"
+                id="imageInput"
+                name="image"
+                accept="image/*"
+                hidden
+              />
+              <p class="image-help">Allowed: JPG, PNG, GIF (Max 5MB)</p>
+            </div>
+
+            <!-- Form Fields -->
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="userName">Full Name</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-user"></i>
+                  <input
+                    type="text"
+                    id="userName"
+                    name="name"
+                    required
+                    placeholder="Enter your name"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="userEmail">Email Address</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-envelope"></i>
+                  <input
+                    type="email"
+                    id="userEmail"
+                    name="email"
+                    required
+                    placeholder="Enter your email"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="newPassword">New Password (Optional)</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-lock"></i>
+                  <input
+                    type="password"
+                    id="newPassword"
+                    name="password"
+                    placeholder="Leave blank to keep current"
+                    minlength="6"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-lock"></i>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Confirm new password"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+              <a href="index.html" class="btn-cancel">Cancel</a>
+              <button type="submit" class="btn-save" id="saveBtn">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="assets/js/all.js/all.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/profile.js"></script>
+    <script src="assets/js/logout-modal.js"></script>
+  </body>
+</html>
