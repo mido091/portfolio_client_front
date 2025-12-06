@@ -888,6 +888,7 @@
   }
   header nav .list-darkmode-menu .hamburger {
     display: block;
+    margin: 0 10px;
   }
   .home {
     padding: 8rem 5% 2rem;
@@ -1031,12 +1032,11 @@
 
 }
 
-.list-darkmode-menu{
-  .active{
+.list-darkmode-menu .active{
     margin-top: -30px;
     gap: 10px;
     z-index: 1;
-  }
+    
 }
 
 
