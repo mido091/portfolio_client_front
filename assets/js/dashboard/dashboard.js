@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://portfolio-client-server.vercel.app/api";
+const API_BASE_URL_2 = "https://portfolio-client-server.vercel.app/api";
 
 document.addEventListener("DOMContentLoaded", () => {
   loadDashboardData();
@@ -17,7 +17,7 @@ function loadDashboardData() {
   // User Count
   const userCount = document.getElementsByClassName("user_count")[0];
   if (userCount) {
-    fetch(`${API_BASE_URL}/users`, { method: "GET", headers })
+    fetch(`${API_BASE_URL_2}/users`, { method: "GET", headers })
       .then((res) => res.json())
       .then((data) => {
         if (data.users) userCount.innerHTML = data.users.length;
@@ -28,7 +28,7 @@ function loadDashboardData() {
   // Posts Count
   const postCount = document.getElementsByClassName("post_count")[0];
   if (postCount) {
-    fetch(`${API_BASE_URL}/plogs`, { method: "GET", headers })
+    fetch(`${API_BASE_URL_2}/plogs`, { method: "GET", headers })
       .then((res) => res.json())
       .then((data) => {
         if (data.plogs) postCount.innerHTML = data.plogs.length;
@@ -71,7 +71,7 @@ function loadUserProfile() {
     return;
   }
 
-  fetch(`${API_BASE_URL}/users/${userId}`, {
+  fetch(`${API_BASE_URL_2}/users/${userId}`, {
     headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => {
