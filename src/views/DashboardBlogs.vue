@@ -420,5 +420,89 @@ onMounted(() => {
   .full-width {
     grid-column: span 1;
   }
+
+  /* Quill editor mobile improvements */
+  .blog-form-container {
+    padding: 20px 15px;
+  }
+
+  :deep(.ql-toolbar) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  :deep(.ql-editor) {
+    min-height: 200px;
+    font-size: 14px;
+  }
+
+  /* Table mobile improvements */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 600px;
+    font-size: 13px;
+  }
+
+  table th,
+  table td {
+    padding: 8px 6px;
+  }
+
+  /* Form actions mobile */
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+  }
+
+  /* Image preview mobile */
+  .preview-box {
+    max-width: 100%;
+  }
+
+  .preview-box img {
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 640px) {
+  .blog-form-container h3 {
+    font-size: 18px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  table {
+    min-width: 500px;
+    font-size: 12px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .action-buttons .btn {
+    width: 100%;
+    font-size: 12px;
+    padding: 8px 12px;
+  }
 }
 </style>

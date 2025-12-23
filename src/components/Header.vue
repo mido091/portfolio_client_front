@@ -77,16 +77,6 @@
 
         <!-- RIGHT ZONE: Actions & Profile -->
         <div class="header-right">
-          <!-- Mobile Menu Toggle (Hamburger) -->
-          <button
-            v-if="!isDesktop"
-            class="hamburger"
-            :class="{ active: mobileMenuOpen }"
-            @click="mobileMenuOpen = !mobileMenuOpen"
-          >
-            <div class="bar"></div>
-          </button>
-
           <!-- Theme Toggle -->
           <label class="mode">
             <input
@@ -98,6 +88,16 @@
             <font-awesome-icon :icon="['fas', 'sun']" class="fa-sun" />
             <font-awesome-icon :icon="['fas', 'moon']" class="fa-moon" />
           </label>
+
+          <!-- Mobile Menu Toggle (Hamburger) -->
+          <button
+            v-if="!isDesktop"
+            class="hamburger"
+            :class="{ active: mobileMenuOpen }"
+            @click="mobileMenuOpen = !mobileMenuOpen"
+          >
+            <div class="bar"></div>
+          </button>
 
           <!-- User Dropdown / Login -->
           <div class="user-dropdown-wrapper">
@@ -506,7 +506,7 @@ input:checked ~ .fa-moon {
   align-items: center;
   gap: 10px;
   padding: 10px 18px;
-  color: white;
+  color: var(--first);
   text-decoration: none;
   font-size: 13.5px;
   transition: 0.2s;
@@ -514,6 +514,7 @@ input:checked ~ .fa-moon {
 
 .user-dropdown-menu li a:hover {
   background: var(--color);
+  color: #fff;
 }
 
 .user-dropdown-menu hr {
@@ -541,12 +542,13 @@ input:checked ~ .fa-moon {
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  color: white;
+  color: var(--first);
   font-size: 13px;
 }
 
 .result-item:hover {
   background: var(--color);
+  color: #fff;
 }
 
 /* Animations */
@@ -633,7 +635,7 @@ input:checked ~ .fa-moon {
 .mobile-nav li a {
   display: block;
   padding: 12px 0;
-  color: white;
+  color: var(--first);
   text-decoration: none;
   font-size: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -704,6 +706,20 @@ input:checked ~ .fa-moon {
   }
   .header-right {
     gap: 15px;
+  }
+
+  /* Improve mobile navigation touch targets */
+  .mobile-nav li a {
+    padding: 16px 0;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Add active state for mobile nav */
+  .mobile-nav li a.router-link-active {
+    color: var(--color);
+    font-weight: 600;
   }
 }
 </style>

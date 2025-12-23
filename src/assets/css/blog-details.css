@@ -75,7 +75,7 @@
     height: auto;
     display: block;
     object-fit: cover;
-    max-height: 450px;
+    max-height: 400px;
 }
 
 .blog-description {
@@ -123,7 +123,35 @@
     .blog-description {
         font-size: 1rem;
     }
+  
+    .blog-image-container img {
+        max-height: 300px;
+    }
+  
+    .back-btn {
+        font-size: 0.9rem;
+        padding: 0.4rem 1.2rem;
+    }
 }
+
+@media (max-width: 480px) {
+    .blog-content h1 {
+        font-size: 1.6rem;
+    }
+  
+    .blog-description {
+        font-size: 0.95rem;
+    }
+  
+    .blog-image-container img {
+        max-height: 250px;
+    }
+  
+    .details-wrapper {
+        padding: 1.25rem;
+    }
+}
+
 
 /* RTL Support for Arabic Content */
 .rtl-post {

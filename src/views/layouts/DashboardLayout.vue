@@ -1,11 +1,10 @@
 <template>
   <div class="dashboard-layout">
-    <!-- Mobile hamburger button -->
+    <!-- Mobile hamburger button - only show when sidebar is closed -->
     <button
-      v-if="isMobile"
+      v-if="isMobile && !sidebarOpen"
       class="mobile-hamburger"
-      @click="sidebarOpen = !sidebarOpen"
-      :class="{ active: sidebarOpen }"
+      @click="sidebarOpen = true"
     >
       <span></span>
       <span></span>

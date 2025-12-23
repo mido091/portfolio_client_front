@@ -65,6 +65,9 @@ body section {
   cursor: pointer;
   transition: 0.3s ease-in;
   transition: all 0.3s ease-in;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 #btn button:hover {
   color: var(--color);
@@ -192,6 +195,8 @@ header nav .list-darkmode-menu ul li a {
   font-size: 20px;
   font-weight: 600;
   transition: 0.3s ease;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 header nav .list-darkmode-menu ul li a.active {
   color: var(--color);

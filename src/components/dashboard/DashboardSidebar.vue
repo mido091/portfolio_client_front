@@ -1,7 +1,11 @@
 <template>
   <div class="menu" :class="{ 'mobile-open': isMobileOpen }">
     <!-- Close button for mobile -->
-    <button v-if="isMobile" class="mobile-close-btn" @click="$emit('close')">
+    <button
+      v-if="isMobileOpen"
+      class="mobile-close-btn"
+      @click="$emit('close')"
+    >
       <font-awesome-icon :icon="['fas', 'times']" />
     </button>
 
@@ -281,20 +285,20 @@ ul li a.active {
   color: white !important;
 }
 
-/* Mobile close button */
+/* Mobile close button - hidden by default, shown only on mobile when sidebar is open */
 .mobile-close-btn {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 36px;
-  height: 36px;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: white;
+  background: rgba(255, 68, 68, 0.15);
+  border: 2px solid rgba(255, 68, 68, 0.3);
+  color: #ff4444;
   font-size: 18px;
   cursor: pointer;
-  display: flex;
+  display: none; /* Hidden by default */
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
@@ -302,26 +306,46 @@ ul li a.active {
 }
 
 .mobile-close-btn:hover {
-  background: rgba(255, 68, 68, 0.2);
+  background: rgba(255, 68, 68, 0.25);
+  border-color: #ff4444;
   transform: rotate(90deg);
 }
 
 /* Mobile responsive behavior */
 @media (max-width: 768px) {
+  /* Show close button on mobile */
+  .mobile-close-btn {
+    display: flex;
+  }
+
   .menu {
     position: fixed;
     left: 0;
     top: 0;
-    width: 260px;
+    width: 280px;
     height: 100vh;
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1001;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
+    padding: 20px 15px;
+    overflow: visible; /* Allow close button to show */
   }
 
   .menu.mobile-open {
     transform: translateX(0);
+  }
+
+  /* Add backdrop when mobile menu is open */
+  .menu.mobile-open::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 280px;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
   }
 
   /* Always show content on mobile when open */
@@ -333,12 +357,25 @@ ul li a.active {
   /* Larger tap targets for mobile */
   .menu ul li a {
     padding: 16px 12px;
-    min-height: 48px;
+    min-height: 52px;
   }
 
   .profile {
-    min-height: 70px;
-    padding: 10px 5px;
+    min-height: 80px;
+    padding: 15px 10px;
+    margin-bottom: 15px;
   }
+
+  .img-box {
+    width: 55px;
+    height: 55px;
+  }
+
+  .profile h2 {
+    font-size: 17px;
+  }
+}
+.mobile-hamburger {
+  display: none !important;
 }
 </style>
