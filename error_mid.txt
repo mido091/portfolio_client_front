@@ -1,0 +1,47 @@
+﻿
+> client@0.0.0 build
+> vite build
+
+[36mvite v7.3.0 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 66 modules transformed.
+node.exe : 
+[31mΓ£ù[39m Build 
+failed in 469ms
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: ([31mΓ£   
+ ù[39m Build fai    
+led in 469ms:Str    
+ing) [], RemoteE    
+xception
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+[31merror during 
+build:
+[31m[vite]: Rollup 
+failed to resolve 
+import "/src/assets/j
+s/slider/slider.js" 
+from "E:/web dev/mevn
+/portofile_client/cli
+ent/src/views/About.v
+ue".
+This is most likely 
+unintended because 
+it can break your 
+application at 
+runtime.
+If you do want to 

@@ -1,0 +1,132 @@
+/* Blog Details Styles */
+
+.blog-details-section {
+    padding: 4rem 0;
+    min-height: 80vh;
+}
+
+.details-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--box-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn {
+    background: transparent;
+    border: 2px solid var(--color);
+    color: var(--first);
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 2.5rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.back-btn:hover {
+    background: var(--color);
+    color: #fff;
+    transform: translateX(-5px);
+}
+
+.blog-content {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.hidden {
+    display: none;
+}
+
+.blog-content h1 {
+    font-size: 2.5rem;
+    color: var(--first);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.blog-meta {
+    color: var(--place-clr);
+    font-size: 0.9rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--clr-bg);
+    padding-bottom: 1rem;
+}
+
+.blog-image-container {
+    width: 100%;
+    margin: 0 auto 2.5rem;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.blog-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    max-height: 450px;
+}
+
+.blog-description {
+    color: var(--first);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    white-space: pre-wrap; /* Preserves line breaks */
+}
+
+.blog-author {
+    border-top: 1px solid var(--clr-bg);
+    padding-top: 1.5rem;
+    color: var(--first);
+    font-style: italic;
+}
+
+.blog-author span {
+    color: var(--color);
+    font-weight: 600;
+}
+
+.loading {
+    text-align: center;
+    color: var(--first);
+    font-size: 1.2rem;
+    padding: 2rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .details-wrapper {
+        padding: 1.5rem;
+    }
+
+    .blog-content h1 {
+        font-size: 2rem;
+    }
+
+    .blog-description {
+        font-size: 1rem;
+    }
+}
+
+/* RTL Support for Arabic Content */
+.rtl-post {
+    direction: rtl;
+    text-align: right;
+}
