@@ -322,7 +322,6 @@ const handleFormSubmit = async () => {
     await api(endpoint, {
       method,
       body: payload,
-      headers: { "Content-Type": undefined },
     });
 
     resetForm();

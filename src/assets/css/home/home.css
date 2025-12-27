@@ -366,6 +366,7 @@
   margin-bottom: 20px;
   flex-wrap: nowrap;
   min-height: auto;
+  padding-bottom: 50px;
 }
 .skills .skills-content .swiper-button-next,
 .skills .skills-content .swiper-button-prev {
@@ -394,6 +395,7 @@
   justify-content: center;
   flex-wrap: nowrap;
   gap: 2em;
+  padding-bottom: 50px;
 }
 .services .services-wrapper .box {
   background: var(--box-bg);
@@ -569,8 +571,10 @@
   padding: 2em;
 }
 .container_portfolio .portfolio-wrapper {
-  height: 500px;
-  margin-bottom: 50px;
+  height: auto;
+  min-height: 500px;
+  margin-bottom: 20px;
+  padding-bottom: 50px;
 }
 .container_portfolio .portfolio-wrapper .portfolio-box {
   position: relative;
@@ -584,6 +588,8 @@
 }
 .container_portfolio .portfolio-wrapper .portfolio-box img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 15px;
   transition: 0.5s ease;
 }
@@ -627,7 +633,8 @@
   background: #fff;
   border-radius: 50%;
 }
-.container_portfolio .portfolio-wrapper .portfolio-box .portfolio-info a i {
+.container_portfolio .portfolio-wrapper .portfolio-box .portfolio-info a i,
+.container_portfolio .portfolio-wrapper .portfolio-box .portfolio-info a svg {
   font-size: 1em;
   color: #000;
 }
@@ -649,6 +656,10 @@
 .container_portfolio .swiper-button-next:hover,
 .container_portfolio .swiper-button-prev:hover {
   color: var(--text-color);
+}
+
+.portfolio .swiper-pagination {
+  margin-top: 20px !important;
 }
 
 .logo-container {
@@ -1059,4 +1070,33 @@
   .heddin{
     display: none;
   }
+}
+
+
+
+
+
+/* Fix 3D card animation clipping while preventing horizontal overflow */
+.skills .skills-wrapper,
+.services .services-wrapper {
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+}
+
+.skills .skills-wrapper .swiper-slide,
+.services .services-wrapper .swiper-slide {
+  overflow: visible !important;
+}
+
+
+/* Swiper Pagination Spacing - Proper separation from cards */
+.skills .swiper-pagination,
+.services .swiper-pagination {
+  margin-top: 30px !important;
+}
+
+
+.skills .skills-wrapper,
+.services .services-wrapper {
+  padding: 50px 10px !important;
 }

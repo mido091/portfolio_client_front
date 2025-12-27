@@ -1,3 +1,11 @@
+:root {
+  --primary-bg: #24408f;
+  --primary-darker: #1c3272;
+  --accent: #4aa3ff;
+  --accent-light: #8fc3ff;
+  --highlight: #f5e400;
+}
+
 .container {
   max-width: 850px;
   margin: 50px auto;
@@ -23,7 +31,8 @@ form label span {
   color: var(--color);
   font-weight: 500;
 }
-form input, form textarea {
+form input,
+form textarea {
   width: 100%;
   background-color: var(--clr-bg);
   border: none;
@@ -34,10 +43,12 @@ form input, form textarea {
   color: var(--first);
   transition: 0.2s;
 }
-form input::-moz-placeholder, form textarea::-moz-placeholder {
+form input::-moz-placeholder,
+form textarea::-moz-placeholder {
   color: #777;
 }
-form input::placeholder, form textarea::placeholder {
+form input::placeholder,
+form textarea::placeholder {
   color: #777;
 }
 form textarea {
@@ -46,9 +57,6 @@ form textarea {
 }
 form .so {
   margin-bottom: 12px;
-}
-form .so .so3 {
-  margin-bottom: 0px;
 }
 form button {
   font-size: 16px;
@@ -72,6 +80,164 @@ form button:hover {
   box-shadow: 0 0 0.7rem var(--color);
 }
 
+.upload-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+.upload-box {
+  background: var(--primary-bg);
+  border: 2px dashed var(--accent);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+}
+.upload-box.dragover {
+  background: var(--primary-darker);
+  border-color: var(--highlight);
+}
+.upload-content {
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--first);
+  gap: 10px;
+}
+.upload-content svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--first);
+  fill: none;
+  stroke-width: 2;
+}
+.upload-box.filled {
+  border-style: solid;
+  color: var(--highlight);
+}
+
+.input-dropdown {
+  position: relative;
+  width: 100%;
+}
+.input-dropdown input {
+  width: 100%;
+  background: var(--primary-bg);
+  border: none;
+  padding: 12px 14px;
+  color: #fff;
+  border-radius: 8px;
+}
+.input-dropdown input::placeholder {
+  color: var(--accent-light);
+}
+
+.dropdown-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--primary-darker);
+  border-radius: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  display: none;
+  z-index: 20;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.dropdown-list li {
+  padding: 10px 14px;
+  cursor: pointer;
+  color: #fff;
+  transition: 0.2s;
+}
+.dropdown-list li:hover {
+  background: var(--highlight);
+  color: #000;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* Align labels and their inputs (checkbox/radio) in the split section */
+.section.split > div {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.section.split > div label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 15px;
+}
+.section.split > div label input[type="checkbox"],
+.section.split > div label input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex: none;
+}
+
+.project-type-wrapper {
+  display: flex;
+  gap: 8px;
+  flex-direction: row-reverse;
+  margin: 15px 0;
+  height: 50px;
+}
+
+#projectTypeSelect {
+  color: var(--first);
+  background-color: var(--clr-bg);
+  border-radius: 10px;
+}
+
+#projectTypeSelect:hover {
+  border-color: var(--color);
+}
+
+.project-type-wrapper select,
+.project-type-wrapper input {
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.upload-box {
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 24px;
+  margin: 1em;
+  border-radius: 25px;
+  color: #fff;
+  background: var(--color) transparent;
+  border: 2px solid var(--color);
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s ease-in;
+  transition: all 0.3s ease-in;
+}
+.upload-box:hover {
+  color: var(--color);
+  background: transparent;
+  transform: translateY(-7px);
+  box-shadow: 0 0 0.7rem var(--color);
+}
+
 @media (max-width: 768px) {
   body {
     padding: 40px 20px;
@@ -89,4 +255,4 @@ form button:hover {
     padding: 20px;
     margin: 20px auto;
   }
-}/*# sourceMappingURL=brief.css.map */
+}

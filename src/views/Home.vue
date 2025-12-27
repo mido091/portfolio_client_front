@@ -131,9 +131,9 @@
       </swiper>
     </div>
     <!-- <button>view all</button> -->
-    <a href="list_skills.html" target="_blank" id="btn">
-      <button>Read More</button>
-    </a>
+    <router-link to="/list-skills" id="btn" active-class="active"
+      ><button>Read More</button></router-link
+    >
   </section>
   <!-- my services -->
   <section id="services" class="services">
@@ -166,7 +166,9 @@
           <h3>{{ service.title }}</h3>
           <p>{{ service.desc }}</p>
           <div class="services-btn">
-            <button>Read More</button>
+            <router-link :to="`/my-services/${service.title}`">
+              <button>Read More</button>
+            </router-link>
           </div>
         </swiper-slide>
 
@@ -230,121 +232,54 @@
       <button>Read More</button>
     </router-link>
   </section>
-  <!-- my portfolio -->
+  <!-- latest project-->
   <section id="portfolio" class="portfolio">
     <h2>latest <span>project</span></h2>
-    <div class="container_portfolio swiper">
-      <div class="portfolio-wrapper swiper-container">
-        <!-- card__content -->
-        <div class="portfolio-boxes swiper-wrapper">
-          <div class="portfolio-box swiper-slide">
-            <!--.card__article-->
-            <img src="/src/assets/images/my_portfolio/steve_jobs.jpeg" alt="" />
-            <div class="portfolio-info">
-              <h4>Web Design</h4>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem
-                amet quisquam explicabo praesentium corrupti esse quaerat
-                maiores nulla sunt facilis.
-              </p>
-              <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
-            </div>
+    <div class="container_portfolio">
+      <swiper
+        :modules="modules"
+        :slides-per-view="1"
+        :space-between="30"
+        :loop="true"
+        :pagination="{ clickable: true, dynamicBullets: true }"
+        :navigation="{
+          nextEl: '.swiper-button-next-portfolio',
+          prevEl: '.swiper-button-prev-portfolio',
+        }"
+        :breakpoints="{
+          600: { slidesPerView: 2 },
+          968: { slidesPerView: 3 },
+        }"
+        class="portfolio-wrapper"
+      >
+        <swiper-slide
+          v-for="(project, index) in projects"
+          :key="index"
+          class="portfolio-box"
+        >
+          <img :src="project.image" :alt="project.title" />
+          <div class="portfolio-info">
+            <h4>{{ project.title }}</h4>
+            <p>{{ project.desc }}</p>
+            <router-link :to="`/my-project/${project.title}`" target="_blank">
+              <font-awesome-icon icon="up-right-from-square" />
+            </router-link>
           </div>
-          <div class="portfolio-box swiper-slide">
-            <img src="/src/assets/images/my_portfolio/mark.jpeg" alt="" />
-            <div class="portfolio-info">
-              <h4>Web Design</h4>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem
-                amet quisquam explicabo praesentium corrupti esse quaerat
-                maiores nulla sunt facilis.
-              </p>
-              <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
-            </div>
-          </div>
-          <div class="portfolio-box swiper-slide">
-            <img src="/src/assets/images/my_portfolio/women.jpeg" alt="" />
-            <div class="portfolio-info">
-              <h4>Web Design</h4>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem
-                amet quisquam explicabo praesentium corrupti esse quaerat
-                maiores nulla sunt facilis.
-              </p>
-              <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
-            </div>
-          </div>
-          <div class="portfolio-box swiper-slide">
-            <img
-              src="/src/assets/images/my_portfolio/infographic_self_image.jpeg"
-              alt=""
-            />
-            <div class="portfolio-info">
-              <h4>Web Design</h4>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem
-                amet quisquam explicabo praesentium corrupti esse quaerat
-                maiores nulla sunt facilis.
-              </p>
-              <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
-            </div>
-          </div>
-          <div class="portfolio-box swiper-slide">
-            <img src="/src/assets/images/my_portfolio/quote.jpeg" alt="" />
-            <div class="portfolio-info">
-              <h4>Web Design</h4>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem
-                amet quisquam explicabo praesentium corrupti esse quaerat
-                maiores nulla sunt facilis.
-              </p>
-              <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
-            </div>
-          </div>
-          <div class="portfolio-box swiper-slide">
-            <img
-              src="/src/assets/images/my_portfolio/post_design_social_media.jpeg"
-              alt=""
-            />
-            <div class="portfolio-info">
-              <h4>Web Design</h4>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem
-                amet quisquam explicabo praesentium corrupti esse quaerat
-                maiores nulla sunt facilis.
-              </p>
-              <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
-            </div>
-          </div>
-          <div class="portfolio-box swiper-slide">
-            <img src="/src/assets/images/my_portfolio/post.jpeg" alt="" />
-            <div class="portfolio-info">
-              <h4>Web Design</h4>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem
-                amet quisquam explicabo praesentium corrupti esse quaerat
-                maiores nulla sunt facilis.
-              </p>
-              <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
-            </div>
-          </div>
-        </div>
-        <!-- Pagination -->
-        <div class="swiper-pagination"></div>
+        </swiper-slide>
+
         <!-- Navigation buttons -->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-      </div>
+        <div class="swiper-button-prev swiper-button-prev-portfolio">
+          <i class="fa-solid fa-chevron-left"></i>
+        </div>
+        <div class="swiper-button-next swiper-button-next-portfolio">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </swiper>
     </div>
-    <!-- <div class="button">
-            <input type="button" value="View All">
-            </div> -->
 
     <router-link to="/list-work" target="_blank" id="btn">
       <button>Read More</button>
     </router-link>
-
-    <!-- </div> -->
   </section>
   <!-- clients -->
   <section class="logo-container">
@@ -552,6 +487,44 @@ const tools = ref([
     image: "/src/assets/images/programs_and_tools/semrush.jpeg",
     alt: "Semrush",
     percentage: 30,
+  },
+]);
+
+const projects = ref([
+  {
+    title: "Web Design",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
+    image: "/src/assets/images/my_portfolio/steve_jobs.jpeg",
+  },
+  {
+    title: "Web Design",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
+    image: "/src/assets/images/my_portfolio/mark.jpeg",
+  },
+  {
+    title: "Web Design",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
+    image: "/src/assets/images/my_portfolio/women.jpeg",
+  },
+  {
+    title: "Web Design",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
+    image: "/src/assets/images/my_portfolio/infographic_self_image.jpeg",
+  },
+  {
+    title: "Web Design",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
+    image: "/src/assets/images/my_portfolio/quote.jpeg",
+  },
+  {
+    title: "Web Design",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
+    image: "/src/assets/images/my_portfolio/post_design_social_media.jpeg",
+  },
+  {
+    title: "Web Design",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
+    image: "/src/assets/images/my_portfolio/post.jpeg",
   },
 ]);
 

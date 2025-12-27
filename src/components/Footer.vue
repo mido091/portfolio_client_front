@@ -67,7 +67,7 @@
         </div>
         <div class="iconTop">
           <a href="#home">
-            <i class="fa-solid fa-arrow-up"></i>
+            <font-awesome-icon :icon="['fas', 'arrow-up']" color="white" />
           </a>
         </div>
       </div>

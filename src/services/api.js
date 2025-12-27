@@ -3,10 +3,18 @@ const BASE_URL = "https://portfolio-client-server.vercel.app/api";
 const api = async (endpoint, options = {}) => {
   const token = localStorage.getItem("token");
 
+  // Don't set Content-Type for FormData - browser will set multipart/form-data with boundary
+  const isFormData = options.body instanceof FormData;
+
   const headers = {
-    "Content-Type": "application/json",
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
     ...options.headers,
   };
+
+  // Remove undefined headers
+  Object.keys(headers).forEach((key) => {
+    if (headers[key] === undefined) delete headers[key];
+  });
 
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;

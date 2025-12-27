@@ -1,7 +1,7 @@
 <template>
   <!-- scroll -->
   <div
-    id="progress"
+    id="progress_1"
     ref="progressCircle"
     @click="scrollToTop"
     :style="progressStyle"
@@ -52,7 +52,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-#progress {
+#progress_1 {
   position: fixed;
   bottom: 30px;
   right: 30px;
@@ -64,7 +64,7 @@ onUnmounted(() => {
   z-index: 1000; /* High z-index to stay on top */
   cursor: pointer;
 }
-#progress #progress-value {
+#progress_1 #progress-value {
   display: block;
   height: calc(100% - 15px);
   width: calc(100% - 15px);
@@ -77,13 +77,13 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
-  #progress {
+  #progress_1 {
     bottom: 20px;
     right: 20px;
     height: 50px;
     width: 50px;
   }
-  #progress #progress-value {
+  #progress_1 #progress-value {
     font-size: 25px;
   }
 }

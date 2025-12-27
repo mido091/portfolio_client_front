@@ -16,6 +16,16 @@ const router = createRouter({
       component: () => import("../views/About.vue"),
     },
     {
+      path: "/certificates",
+      name: "certificates",
+      component: () => import("../views/CertificatesPage.vue"),
+    },
+    {
+      path: "/books",
+      name: "books",
+      component: () => import("../views/BooksPage.vue"),
+    },
+    {
       path: "/blogs",
       name: "blogs",
       component: () => import("../views/Blogs.vue"),
@@ -84,6 +94,11 @@ const router = createRouter({
       component: () => import("../views/ListWork.vue"),
     },
     {
+      path: "/brief",
+      name: "brief",
+      component: () => import("../views/Brief.vue"),
+    },
+    {
       path: "/my-services/:id",
       name: "my-services",
       component: () => import("../views/MyServices.vue"),
@@ -92,6 +107,11 @@ const router = createRouter({
       path: "/my-tools/:id",
       name: "my-tools",
       component: () => import("../views/MyTool.vue"),
+    },
+    {
+      path: "/my-project/:id",
+      name: "my-project",
+      component: () => import("../views/MyProject.vue"),
     },
   ],
   scrollBehavior(to, from, savedPosition) {

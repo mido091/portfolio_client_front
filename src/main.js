@@ -49,6 +49,8 @@ import {
   faEnvelope,
   faPalette,
   faChartSimple,
+  faPlus,
+  faUpRightFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Brand icons
@@ -130,7 +132,9 @@ library.add(
   faUserTie,
   faEnvelope,
   faPalette,
-  faChartSimple
+  faChartSimple,
+  faPlus,
+  faUpRightFromSquare
 );
 
 // تسجيل المكون Globally

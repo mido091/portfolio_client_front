@@ -229,28 +229,37 @@ const editBlog = (blog) => {
 const handleFormSubmit = async () => {
   submitting.value = true;
   try {
-    const payload = new FormData();
-    payload.append("header", formData.header);
-    payload.append("title", formData.title);
-    payload.append("description", quill.root.innerHTML);
-    payload.append("footer", formData.footer);
-    if (selectedFile.value) payload.append("image", selectedFile.value);
-
     const endpoint = isEditMode.value
       ? `/plogs/${currentEditingBlogId.value}`
       : "/plogs";
     const method = isEditMode.value ? "PUT" : "POST";
 
+    const payload = new FormData();
+    payload.append("header", formData.header);
+    payload.append("title", formData.title);
+    payload.append("description", quill.root.innerHTML);
+    payload.append("footer", formData.footer);
+
+    // Only append image if a new file was selected
+    // For updates without new image, omit the field entirely
+    if (selectedFile.value) {
+      payload.append("image", selectedFile.value);
+    }
+
     await api(endpoint, {
       method,
       body: payload,
-      headers: { "Content-Type": undefined },
     });
 
     resetForm();
     loadBlogs();
   } catch (error) {
     console.error("Error saving blog:", error);
+    alert(
+      `Failed to ${isEditMode.value ? "update" : "create"} blog: ${
+        error.message
+      }`
+    );
   } finally {
     submitting.value = false;
   }

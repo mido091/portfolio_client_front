@@ -37,4 +37,7 @@ onMounted(() => {
 
 <style>
 /* Global styles are imported via CSS files */
+#progress {
+  display: none !important;
+}
 </style>

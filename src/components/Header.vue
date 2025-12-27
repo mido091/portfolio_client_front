@@ -72,6 +72,9 @@
             <li>
               <router-link to="/about" active-class="active">About</router-link>
             </li>
+            <li>
+              <router-link to="/brief" active-class="active">Brief</router-link>
+            </li>
           </ul>
         </div>
 
