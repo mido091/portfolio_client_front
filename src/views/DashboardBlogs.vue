@@ -42,6 +42,25 @@
             />
           </div>
           <div class="form-group">
+            <label>Category</label>
+            <select v-model="formData.category" class="category-select">
+              <option value="">-- Select Category --</option>
+              <option v-for="cat in uniqueCategories" :key="cat" :value="cat">
+                {{ cat }}
+              </option>
+              <option value="__other__">Other (Custom)</option>
+            </select>
+            <!-- Custom category input (shown when "Other" is selected) -->
+            <input
+              v-if="formData.category === '__other__'"
+              v-model="customCategory"
+              type="text"
+              placeholder="Enter custom category"
+              class="custom-category-input"
+            />
+            <small>Optional: Categorize your blog post</small>
+          </div>
+          <div class="form-group">
             <label>Banner Image</label>
             <input type="file" @change="handleImageSelect" accept="image/*" />
             <small>Max size: 5MB</small>
@@ -143,10 +162,11 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, nextTick } from "vue";
+import { ref, reactive, computed, onMounted, nextTick } from "vue";
 import api from "@/services/api";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
+import { normalizeCategory, getUniqueCategories } from "@/utils/categoryUtils";
 
 const blogs = ref([]);
 const loading = ref(true);
@@ -156,12 +176,19 @@ const currentEditingBlogId = ref(null);
 const imagePreview = ref(null);
 const selectedFile = ref(null);
 const editorRef = ref(null);
+const customCategory = ref(""); // For "Other" option
 let quill = null;
 
 const formData = reactive({
   header: "",
   title: "",
   footer: "",
+  category: "", // Category field
+});
+
+// Computed property to get unique categories from existing blogs
+const uniqueCategories = computed(() => {
+  return getUniqueCategories(blogs.value);
 });
 
 const loadBlogs = async () => {
@@ -211,6 +238,8 @@ const resetForm = () => {
   formData.header = "";
   formData.title = "";
   formData.footer = "";
+  formData.category = ""; // Reset category
+  customCategory.value = ""; // Reset custom category
   if (quill) quill.setContents([]);
   clearImage();
 };
@@ -221,6 +250,22 @@ const editBlog = (blog) => {
   formData.header = blog.header;
   formData.title = blog.title;
   formData.footer = blog.footer;
+
+  // Handle category: if it exists in the list, select it; otherwise use "Other"
+  const blogCategory = normalizeCategory(blog.category);
+  if (blogCategory && uniqueCategories.value.includes(blogCategory)) {
+    formData.category = blogCategory;
+    customCategory.value = "";
+  } else if (blogCategory) {
+    // Category exists but not in the list - use "Other"
+    formData.category = "__other__";
+    customCategory.value = blogCategory;
+  } else {
+    // No category
+    formData.category = "";
+    customCategory.value = "";
+  }
+
   if (quill) quill.root.innerHTML = blog.description;
   imagePreview.value = blog.image;
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -239,6 +284,21 @@ const handleFormSubmit = async () => {
     payload.append("title", formData.title);
     payload.append("description", quill.root.innerHTML);
     payload.append("footer", formData.footer);
+
+    // Determine which category to send
+    let categoryToSend = null;
+    if (formData.category === "__other__") {
+      // User selected "Other" - use custom category
+      categoryToSend = normalizeCategory(customCategory.value);
+    } else if (formData.category) {
+      // User selected a predefined category
+      categoryToSend = normalizeCategory(formData.category);
+    }
+    // If categoryToSend is still null, we send null (no category)
+
+    if (categoryToSend) {
+      payload.append("category", categoryToSend);
+    }
 
     // Only append image if a new file was selected
     // For updates without new image, omit the field entirely
@@ -326,6 +386,30 @@ onMounted(() => {
   border-radius: 6px;
   color: white;
   outline: none;
+}
+
+.form-group select.category-select {
+  background: rgb(40, 39, 39);
+  border: 1px solid #444;
+  padding: 12px;
+  border-radius: 6px;
+  color: white;
+  outline: none;
+  cursor: pointer;
+}
+
+.form-group select.category-select option {
+  background: rgb(40, 39, 39);
+  color: white;
+}
+
+.custom-category-input {
+  margin-top: 8px;
+}
+
+.form-group small {
+  color: #999;
+  font-size: 12px;
 }
 
 .quill-editor {

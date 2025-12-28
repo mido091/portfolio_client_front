@@ -15,6 +15,9 @@
           <img :src="book.coverSrc" :alt="book.title" />
           <h3>{{ book.title }}</h3>
           <p>{{ book.description }}</p>
+          <router-link :to="`/my-books/${book.title}`" id="btn">
+            <button class="details-btn">View Details</button>
+          </router-link>
         </div>
       </div>
     </div>

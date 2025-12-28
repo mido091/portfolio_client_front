@@ -319,23 +319,52 @@
   <section id="contact" class="contact">
     <div class="container">
       <h2>Contact <span>Me!</span></h2>
+
+      <!-- Success/Error Message -->
+      <div
+        v-if="contactMessage.text"
+        class="contact-message"
+        :class="contactMessage.type"
+      >
+        {{ contactMessage.text }}
+      </div>
+
       <!-- فورم ارسال الرسائل -->
-      <form id="contactForm" method="POST" action="/send-email">
+      <form id="contactForm" @submit.prevent="handleContactSubmit">
         <div class="input-box">
-          <input type="text" placeholder="Full Name" required name="name" />
+          <input
+            type="text"
+            placeholder="Full Name"
+            required
+            v-model.trim="contactForm.name"
+          />
           <input
             type="email"
             placeholder="Email Address"
             required
-            name="email"
+            v-model.trim="contactForm.email"
           />
         </div>
         <div class="input-box">
-          <input type="tel" placeholder="Mobile Number" name="phone" />
-          <input type="text" placeholder="Email Subject" name="subject" />
+          <input
+            type="tel"
+            placeholder="Mobile Number"
+            v-model.trim="contactForm.phone"
+          />
+          <input
+            type="text"
+            placeholder="Email Subject"
+            v-model.trim="contactForm.subject"
+          />
         </div>
-        <textarea name="message" id="" placeholder="Your Message"></textarea>
-        <button type="submit">Send Message</button>
+        <textarea
+          placeholder="Your Message"
+          required
+          v-model.trim="contactForm.message"
+        ></textarea>
+        <button type="submit" :disabled="isSubmittingContact">
+          {{ isSubmittingContact ? "Sending..." : "Send Message" }}
+        </button>
       </form>
     </div>
   </section>
@@ -350,7 +379,7 @@
   <!-- رابط مكتبة السلايدر رابط خارجي -->
 </template>
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, reactive, onMounted, nextTick } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -358,6 +387,105 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const modules = [Navigation, Pagination];
+
+const BASE_URL = "https://portfolio-client-server.vercel.app/api";
+
+// Contact Form State
+const contactForm = reactive({
+  name: "",
+  email: "",
+  phone: "",
+  subject: "",
+  message: "",
+});
+
+const isSubmittingContact = ref(false);
+const contactMessage = ref({ type: "", text: "" });
+
+// Contact Form Submit Handler
+async function handleContactSubmit() {
+  // Clear previous messages
+  contactMessage.value = { type: "", text: "" };
+
+  // Validate required fields
+  if (!contactForm.name.trim()) {
+    contactMessage.value = { type: "error", text: "Name is required" };
+    return;
+  }
+  if (!contactForm.email.trim()) {
+    contactMessage.value = { type: "error", text: "Email is required" };
+    return;
+  }
+  if (!contactForm.message.trim()) {
+    contactMessage.value = { type: "error", text: "Message is required" };
+    return;
+  }
+
+  // Build JSON payload
+  const payload = {
+    name: contactForm.name,
+    email: contactForm.email,
+    phone: contactForm.phone || null,
+    subject: contactForm.subject || null,
+    message: contactForm.message,
+  };
+
+  // Submit to API
+  isSubmittingContact.value = true;
+
+  try {
+    const response = await fetch(`${BASE_URL}/contact`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      // Try to get error message from response
+      let errorMessage = "Failed to send message";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorData.error || errorMessage;
+      } catch {
+        errorMessage = `Server error: ${response.status} ${response.statusText}`;
+      }
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    console.log("Contact message sent successfully:", data);
+
+    // Show success message
+    contactMessage.value = {
+      type: "success",
+      text: "Message sent successfully! We'll get back to you soon.",
+    };
+
+    // Reset form after short delay
+    setTimeout(() => {
+      contactForm.name = "";
+      contactForm.email = "";
+      contactForm.phone = "";
+      contactForm.subject = "";
+      contactForm.message = "";
+
+      // Clear success message after form reset
+      setTimeout(() => {
+        contactMessage.value = { type: "", text: "" };
+      }, 3000);
+    }, 1500);
+  } catch (error) {
+    console.error("Error sending contact message:", error);
+    contactMessage.value = {
+      type: "error",
+      text: error.message || "Failed to send message. Please try again.",
+    };
+  } finally {
+    isSubmittingContact.value = false;
+  }
+}
 
 const services = ref([
   {
@@ -738,5 +866,45 @@ onMounted(() => {
 .services .services-wrapper {
   display: block;
   gap: 0;
+}
+
+/* Contact Form Message Styles */
+.contact-message {
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 15px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.contact-message.success {
+  background: rgba(34, 197, 94, 0.15);
+  border: 2px solid rgba(34, 197, 94, 0.5);
+  color: #22c55e;
+}
+
+.contact-message.error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 2px solid rgba(239, 68, 68, 0.5);
+  color: #ef4444;
+}
+
+/* Contact Form Button Disabled State */
+.contact form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>

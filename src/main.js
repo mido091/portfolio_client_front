@@ -2,8 +2,13 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 
-// Global Settings System - Initialize theme and CSS variables
-import "@/composables/useSiteSettings";
+// Global Settings System - Fetch from API and apply to DOM
+import { fetchSettings } from "@/stores/settingsStore";
+
+// Initialize settings from API before mounting app
+fetchSettings().then(() => {
+  console.log("Settings loaded and applied");
+});
 
 // FontAwesome
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -51,6 +56,24 @@ import {
   faChartSimple,
   faPlus,
   faUpRightFromSquare,
+  faMessage,
+  faInbox,
+  faChevronUp,
+  faChevronRight,
+  faChevronLeft,
+  faFileLines,
+  faSearch,
+  faCircleExclamation,
+  faRotateLeft,
+  faRotateRight,
+  faFloppyDisk,
+  faDroplet,
+  faGlobe,
+  faRulerCombined,
+  faWandMagicSparkles,
+  faShareNodes,
+  faBell,
+  faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Brand icons
@@ -134,7 +157,25 @@ library.add(
   faPalette,
   faChartSimple,
   faPlus,
-  faUpRightFromSquare
+  faUpRightFromSquare,
+  faMessage,
+  faInbox,
+  faChevronUp,
+  faChevronRight,
+  faChevronLeft,
+  faFileLines,
+  faSearch,
+  faCircleExclamation,
+  faRotateLeft,
+  faRotateRight,
+  faFloppyDisk,
+  faDroplet,
+  faGlobe,
+  faRulerCombined,
+  faWandMagicSparkles,
+  faShareNodes,
+  faBell,
+  faCheckCircle
 );
 
 // تسجيل المكون Globally

@@ -92,6 +92,81 @@
             <font-awesome-icon :icon="['fas', 'moon']" class="fa-moon" />
           </label>
 
+          <!-- Notification Bell (Admin Only) -->
+          <div v-if="isAdmin" class="notification-wrapper">
+            <button
+              class="notification-bell"
+              :class="{ 'has-notifications': hasNewNotifications }"
+              @click.stop="toggleNotificationPanel"
+              title="Notifications"
+            >
+              <font-awesome-icon :icon="['fas', 'bell']" />
+              <span v-if="totalNewCount > 0" class="notification-badge">
+                {{ totalNewCount > 99 ? "99+" : totalNewCount }}
+              </span>
+            </button>
+
+            <!-- Notification Dropdown Panel -->
+            <transition name="slide-up">
+              <div v-if="showNotificationPanel" class="notification-panel">
+                <div class="notification-header">
+                  <h4>Notifications</h4>
+                  <span v-if="totalNewCount > 0" class="count-badge">
+                    {{ totalNewCount }} new
+                  </span>
+                </div>
+
+                <div class="notification-body">
+                  <!-- No notifications -->
+                  <div v-if="totalNewCount === 0" class="no-notifications">
+                    <font-awesome-icon :icon="['fas', 'check-circle']" />
+                    <p>All caught up!</p>
+                  </div>
+
+                  <!-- Brief notifications -->
+                  <div
+                    v-if="newBriefCount > 0"
+                    class="notification-item"
+                    @click="navigateToNotification('brief')"
+                  >
+                    <div class="notification-icon brief">
+                      <font-awesome-icon :icon="['fas', 'file-lines']" />
+                    </div>
+                    <div class="notification-content">
+                      <p class="notification-title">New Brief Submissions</p>
+                      <p class="notification-desc">
+                        {{ newBriefCount }} new brief{{
+                          newBriefCount > 1 ? "s" : ""
+                        }}
+                        received
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Contact notifications -->
+                  <div
+                    v-if="newContactCount > 0"
+                    class="notification-item"
+                    @click="navigateToNotification('contact')"
+                  >
+                    <div class="notification-icon contact">
+                      <font-awesome-icon :icon="['fas', 'envelope']" />
+                    </div>
+                    <div class="notification-content">
+                      <p class="notification-title">New Contact Messages</p>
+                      <p class="notification-desc">
+                        {{ newContactCount }} new message{{
+                          newContactCount > 1 ? "s" : ""
+                        }}
+                        received
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </transition>
+          </div>
+
           <!-- Mobile Menu Toggle (Hamburger) -->
           <button
             v-if="!isDesktop"
@@ -191,6 +266,9 @@
           <li>
             <a href="/#contact" @click="mobileMenuOpen = false">Contact</a>
           </li>
+          <li>
+            <router-link to="/brief" active-class="active">Brief</router-link>
+          </li>
         </ul>
       </transition>
     </div>
@@ -202,9 +280,19 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "@/composables/useAuth";
 import { useSiteSettings } from "@/composables/useSiteSettings";
+import { useNotifications } from "@/composables/useNotifications";
 
 const router = useRouter();
 const { isAuthenticated, user, isAdmin, logout } = useAuth();
+
+// Notifications (admin only)
+const {
+  totalNewCount,
+  newBriefCount,
+  newContactCount,
+  hasNewNotifications,
+  markAllAsSeen,
+} = useNotifications(user.value?.role);
 
 // Get site settings
 const {
@@ -219,6 +307,7 @@ const isScrolled = ref(false);
 const mobileMenuOpen = ref(false);
 const isDesktop = ref(window.innerWidth >= 1024); // Standard desktop breakpoint
 const showUserMenu = ref(false);
+const showNotificationPanel = ref(false);
 
 const defaultImg =
   "https://res.cloudinary.com/ddqlt5oqu/image/upload/v1764967019/default_pi1ur8.webp";
@@ -276,8 +365,37 @@ const handleResize = () => {
   isDesktop.value = window.innerWidth >= 1024;
 };
 
+// Notification handlers
+const toggleNotificationPanel = () => {
+  showNotificationPanel.value = !showNotificationPanel.value;
+  if (showNotificationPanel.value) {
+    // Mark as seen when panel opens
+    markAllAsSeen();
+  }
+};
+
+const navigateToNotification = (type) => {
+  showNotificationPanel.value = false;
+
+  if (type === "brief") {
+    router.push("/dashboard/submissions");
+  } else if (type === "contact") {
+    router.push("/dashboard/submissions");
+    // Scroll to contact section after navigation
+    setTimeout(() => {
+      const contactSection = document.querySelector(
+        ".title-info:nth-of-type(2)"
+      );
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 300);
+  }
+};
+
 const closeMenus = () => {
   showUserMenu.value = false;
+  showNotificationPanel.value = false;
 };
 
 onMounted(() => {
@@ -622,6 +740,178 @@ input:checked ~ .fa-moon {
   cursor: pointer;
   transition: all 0.3s ease-in;
 }
+
+/* Notification System */
+.notification-wrapper {
+  position: relative;
+}
+
+.notification-bell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--first);
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.notification-bell:hover {
+  color: var(--color);
+}
+
+.notification-bell.has-notifications {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.notification-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: #ff4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(255, 68, 68, 0.4);
+}
+
+.notification-panel {
+  position: absolute;
+  top: calc(100% + 15px);
+  right: 0;
+  width: 320px;
+  max-height: 400px;
+  background: var(--mob-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 1100;
+  overflow: hidden;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.notification-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--first);
+}
+
+.count-badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  background: var(--color);
+  color: #fff;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.notification-body {
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.no-notifications {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--place-clr);
+}
+
+.no-notifications svg {
+  font-size: 48px;
+  margin-bottom: 10px;
+  color: #4caf50;
+}
+
+.no-notifications p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.notification-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+.notification-icon.brief {
+  background: rgba(4, 129, 255, 0.15);
+  color: #0481ff;
+}
+
+.notification-icon.contact {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ff9800;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--first);
+}
+
+.notification-desc {
+  margin: 0;
+  font-size: 12px;
+  color: var(--place-clr);
+}
+
 /* Mobile Nav Drawer */
 .mobile-nav {
   position: fixed;
@@ -723,6 +1013,24 @@ input:checked ~ .fa-moon {
   .mobile-nav li a.router-link-active {
     color: var(--color);
     font-weight: 600;
+  }
+
+  /* Notification panel responsive */
+  .notification-panel {
+    width: 280px;
+    right: -10px;
+  }
+
+  .notification-bell {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .notification-badge {
+    min-width: 16px;
+    height: 16px;
+    font-size: 9px;
   }
 }
 </style>

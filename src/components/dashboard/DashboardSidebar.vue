@@ -80,6 +80,17 @@
       </li>
 
       <li>
+        <router-link
+          to="/dashboard/submissions"
+          active-class="active"
+          @click="$emit('close')"
+        >
+          <font-awesome-icon :icon="['fas', 'message']" />
+          <p>submissions</p>
+        </router-link>
+      </li>
+
+      <li>
         <a href="#" @click="$emit('close')">
           <font-awesome-icon :icon="['fas', 'star']" />
           <p>favorite</p>
@@ -87,10 +98,14 @@
       </li>
 
       <li>
-        <a href="#" @click="$emit('close')">
+        <router-link
+          to="/dashboard/settings"
+          active-class="active"
+          @click="$emit('close')"
+        >
           <font-awesome-icon :icon="['fas', 'gear']" />
           <p>settings</p>
-        </a>
+        </router-link>
       </li>
 
       <li class="log-out">

@@ -407,14 +407,28 @@
           </div>
         </div>
 
-        <button type="submit" class="submit-btn">Send Information</button>
+        <!-- Success/Error Message -->
+        <div
+          v-if="submitMessage.text"
+          class="submit-message"
+          :class="submitMessage.type"
+        >
+          {{ submitMessage.text }}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn" :disabled="isSubmitting">
+          {{ isSubmitting ? "Submitting..." : "Submit Brief" }}
+        </button>
       </form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, reactive, ref, watch } from "vue";
+import { ref, reactive, computed, watch } from "vue";
+
+const BASE_URL = "https://portfolio-client-server.vercel.app/api";
 
 const form = reactive({
   fullName: "",
@@ -462,19 +476,155 @@ const uploadLabels = computed(() =>
 
 function onPickFile(e, idx) {
   const file = e.target?.files?.[0] ?? null;
+  // Validate file type
+  if (file && !file.type.startsWith("image/")) {
+    alert("Please select only image files");
+    e.target.value = "";
+    return;
+  }
   uploads.value[idx] = file;
 }
 
-function handleSubmit() {
-  const payload = {
-    ...form,
-    projectType: projectTypeFinal.value,
-    logos: uploads.value.filter(Boolean).map((f) => f.name),
-    _submittedAt: new Date().toISOString(),
-  };
+// Submission state
+const isSubmitting = ref(false);
+const submitMessage = ref({ type: "", text: "" });
 
-  localStorage.setItem("briefSubmission", JSON.stringify(payload));
-  console.log("Brief submitted:", payload);
+// Reset form function
+function resetForm() {
+  // Reset form fields
+  Object.keys(form).forEach((key) => {
+    if (Array.isArray(form[key])) {
+      form[key] = [];
+    } else {
+      form[key] = "";
+    }
+  });
+
+  // Reset project type select
+  projectTypeSelect.value = "";
+
+  // Reset file uploads
+  uploads.value = [null, null, null, null, null];
+
+  // Reset file input elements
+  const fileInputs = document.querySelectorAll('input[type="file"]');
+  fileInputs.forEach((input) => {
+    input.value = "";
+  });
+}
+
+async function handleSubmit() {
+  // Clear previous messages
+  submitMessage.value = { type: "", text: "" };
+
+  // Validate required fields
+  if (!form.fullName.trim()) {
+    submitMessage.value = { type: "error", text: "Full Name is required" };
+    return;
+  }
+  if (!form.website.trim()) {
+    submitMessage.value = { type: "error", text: "Website is required" };
+    return;
+  }
+  if (!form.email.trim()) {
+    submitMessage.value = { type: "error", text: "Email is required" };
+    return;
+  }
+  if (!form.logoName.trim()) {
+    submitMessage.value = { type: "error", text: "Logo Name is required" };
+    return;
+  }
+  if (!form.slogan.trim()) {
+    submitMessage.value = { type: "error", text: "Slogan is required" };
+    return;
+  }
+
+  // Build FormData
+  const formData = new FormData();
+
+  // Append all text fields
+  formData.append("fullName", form.fullName);
+  formData.append("website", form.website);
+  formData.append("phone", form.phone || "");
+  formData.append("email", form.email);
+  formData.append("social1", form.social1 || "");
+  formData.append("social2", form.social2 || "");
+  formData.append("social3", form.social3 || "");
+  formData.append("logoName", form.logoName);
+  formData.append("companyField", form.companyField || "");
+  formData.append("goals", form.goals || "");
+  formData.append("slogan", form.slogan);
+  formData.append("nameDetails", form.nameDetails || "");
+  formData.append("competitors", form.competitors || "");
+  formData.append("references", form.references || "");
+  formData.append("projectName", form.projectName || "");
+  formData.append("projectType", projectTypeFinal.value || "");
+  formData.append("projectTypeOther", form.projectTypeOther || "");
+
+  // Append arrays as JSON strings
+  formData.append("audience", JSON.stringify(form.audience));
+  formData.append("applications", JSON.stringify(form.applications));
+
+  formData.append("logoType", form.logoType || "");
+  formData.append("favoriteColors", form.favoriteColors || "");
+  formData.append("aboutProject", form.aboutProject || "");
+  formData.append("deadline", form.deadline || "");
+  formData.append("budget", form.budget || "");
+
+  // Append logo files
+  const logoFiles = uploads.value.filter(Boolean);
+  logoFiles.forEach((file) => {
+    formData.append("logos", file);
+  });
+
+  // Submit to API
+  isSubmitting.value = true;
+
+  try {
+    const response = await fetch(`${BASE_URL}/briefs`, {
+      method: "POST",
+      body: formData,
+      // Don't set Content-Type header - browser will set it with boundary for multipart/form-data
+    });
+
+    if (!response.ok) {
+      // Try to get error message from response
+      let errorMessage = "Failed to submit brief";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorData.error || errorMessage;
+      } catch {
+        errorMessage = `Server error: ${response.status} ${response.statusText}`;
+      }
+      throw new Error(errorMessage);
+    }
+
+    const data = await response.json();
+    console.log("Brief submitted successfully:", data);
+
+    // Show success message
+    submitMessage.value = {
+      type: "success",
+      text: `Brief submitted successfully! ID: ${data.id || "N/A"}`,
+    };
+
+    // Reset form after short delay
+    setTimeout(() => {
+      resetForm();
+      // Clear success message after form reset
+      setTimeout(() => {
+        submitMessage.value = { type: "", text: "" };
+      }, 3000);
+    }, 1500);
+  } catch (error) {
+    console.error("Error submitting brief:", error);
+    submitMessage.value = {
+      type: "error",
+      text: error.message || "Failed to submit brief. Please try again.",
+    };
+  } finally {
+    isSubmitting.value = false;
+  }
 }
 </script>
 
@@ -777,6 +927,40 @@ form textarea {
 .split-left,
 .split-right {
   min-width: 0;
+}
+
+/* ================= SUBMIT MESSAGE ================= */
+.submit-message {
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 15px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.submit-message.success {
+  background: rgba(34, 197, 94, 0.15);
+  border: 2px solid rgba(34, 197, 94, 0.5);
+  color: #22c55e;
+}
+
+.submit-message.error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 2px solid rgba(239, 68, 68, 0.5);
+  color: #ef4444;
 }
 
 /* ================= SUBMIT BUTTON ================= */

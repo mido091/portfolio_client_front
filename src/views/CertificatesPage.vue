@@ -16,7 +16,9 @@
           :key="index"
           class="certificate-card"
         >
+        <router-link :to="`/certificates/${certificate.id}`">
           <img :src="certificate.src" :alt="certificate.alt" />
+        </router-link>
         </div>
       </div>
     </div>
@@ -35,34 +37,42 @@ import { ref, onMounted, onUnmounted } from "vue";
 
 const certificates = ref([
   {
+    id:1,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id:2,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id:3,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id:4,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id:5,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id:6,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id:7,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id:8,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },

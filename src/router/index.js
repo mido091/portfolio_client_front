@@ -71,6 +71,16 @@ const router = createRouter({
           name: "dashboard-users",
           component: () => import("../views/DashboardUsers.vue"),
         },
+        {
+          path: "submissions",
+          name: "dashboard-submissions",
+          component: () => import("../views/DashboardSubmissions.vue"),
+        },
+        {
+          path: "settings",
+          name: "dashboard-settings",
+          component: () => import("../views/DashboardSettings.vue"),
+        },
       ],
     },
     {
@@ -112,6 +122,16 @@ const router = createRouter({
       path: "/my-project/:id",
       name: "my-project",
       component: () => import("../views/MyProject.vue"),
+    },
+    {
+      path: "/my-books/:id",
+      name: "my-books",
+      component: () => import("../views/MyBooks.vue"),
+    },
+    {
+      path: "/certificates/:id",
+      name: "certificate-details",
+      component: () => import("../views/CertificateDetails.vue"),
     },
   ],
   scrollBehavior(to, from, savedPosition) {

@@ -99,7 +99,9 @@
           class="certificate-slide"
         >
           <div class="certificate-box">
-            <img :src="certificate.src" :alt="certificate.alt" />
+            <router-link :to="`/certificates/${certificate.id}`">
+              <img :src="certificate.src" :alt="certificate.alt" />
+            </router-link>
           </div>
         </swiper-slide>
 
@@ -146,6 +148,9 @@
             <img :src="book.coverSrc" :alt="book.title" />
             <h3>{{ book.title }}</h3>
             <p>{{ book.description }}</p>
+            <router-link :to="`/my-books/${book.title}`" id="btn">
+              <button class="details-btn">View Details</button>
+            </router-link>
           </div>
         </swiper-slide>
 
@@ -215,34 +220,42 @@ const typingEl = ref(null);
 // Certificates data
 const certificates = ref([
   {
+    id: 1,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id: 2,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id: 3,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id: 4,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id: 5,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id: 6,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id: 7,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
+    id: 8,
     src: "/src/assets/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
