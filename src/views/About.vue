@@ -5,7 +5,7 @@
         <div class="about-left">
           <div class="about-img">
             <img
-              src="/src/assets/images/my_pictures/man.jpg"
+              src="/images/my_pictures/man.jpg"
               alt="My Picture"
               ref="heroImg"
             />
@@ -221,42 +221,42 @@ const typingEl = ref(null);
 const certificates = ref([
   {
     id: 1,
-    src: "/src/assets/images/about/yyy.jpeg",
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
     id: 2,
-    src: "/src/assets/images/about/yyy.jpeg",
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
     id: 3,
-    src: "/src/assets/images/about/yyy.jpeg",
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
     id: 4,
-    src: "/src/assets/images/about/yyy.jpeg",
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
     id: 5,
-    src: "/src/assets/images/about/yyy.jpeg",
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
     id: 6,
-    src: "/src/assets/images/about/yyy.jpeg",
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
     id: 7,
-    src: "/src/assets/images/about/yyy.jpeg",
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
     id: 8,
-    src: "/src/assets/images/about/yyy.jpeg",
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
 ]);
@@ -264,43 +264,43 @@ const certificates = ref([
 // Books data
 const books = ref([
   {
-    coverSrc: "/src/assets/images/books/book.webp",
+    coverSrc: "/images/books/book.webp",
     title: "Clean Code",
     description:
       "A Handbook of Agile Software Craftsmanship by Robert C. Martin",
   },
   {
-    coverSrc: "/src/assets/images/books/book.webp",
+    coverSrc: "/images/books/book.webp",
     title: "The Pragmatic Programmer",
     description: "Your Journey To Mastery by David Thomas and Andrew Hunt",
   },
   {
-    coverSrc: "/src/assets/images/books/book.webp",
+    coverSrc: "/images/books/book.webp",
     title: "Design Patterns",
     description: "Elements of Reusable Object-Oriented Software",
   },
   {
-    coverSrc: "/src/assets/images/books/book.webp",
+    coverSrc: "/images/books/book.webp",
     title: "Refactoring",
     description: "Improving the Design of Existing Code by Martin Fowler",
   },
   {
-    coverSrc: "/src/assets/images/books/book.webp",
+    coverSrc: "/images/books/book.webp",
     title: "You Don't Know JS",
     description: "A deep dive into the core mechanisms of JavaScript",
   },
   {
-    coverSrc: "/src/assets/images/books/book.webp",
+    coverSrc: "/images/books/book.webp",
     title: "Eloquent JavaScript",
     description: "A Modern Introduction to Programming by Marijn Haverbeke",
   },
   {
-    coverSrc: "/src/assets/images/books/book.webp",
+    coverSrc: "/images/books/book.webp",
     title: "JavaScript: The Good Parts",
     description: "Unearthing the Excellence in JavaScript by Douglas Crockford",
   },
   {
-    coverSrc: "/src/assets/images/books/book.webp",
+    coverSrc: "/images/books/book.webp",
     title: "Code Complete",
     description:
       "A Practical Handbook of Software Construction by Steve McConnell",

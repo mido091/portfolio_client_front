@@ -14,9 +14,9 @@
   width: 400px;
   height: 400px;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   -o-object-position: top;
-     object-position: top;
+  object-position: top;
   border-radius: 50%;
   border: 3px solid var(--color);
   box-shadow: 0 0 40px var(--color);
@@ -171,21 +171,22 @@ p {
   overflow: hidden;
 }
 
-/* حركة البوردر تُضاف فقط عند دخول العنصر للشاشة */
+/* حركة البوردر من المنتصف إلى اليسار */
 @keyframes borderAppear {
   0% {
-    transform: translateY(100%) translateX(50%);
+    transform: translateX(50%); /* يبدأ من منتصف الشاشة */
     border-color: transparent;
   }
   50% {
-    transform: translateY(0) translateX(50%);
-    border-color: var(--first); /* لون البوردر أثناء الظهور */
+    transform: translateX(0); /* يتحرك إلى أقصى اليسار */
+    border-color: var(--first); /* لون البوردر أثناء الحركة */
   }
   100% {
-    transform: translateY(0) translateX(0);
+    transform: translateX(0); /* يثبت في أقصى اليسار */
     border-color: var(--color); /* لون البوردر النهائي */
   }
 }
+
 /* لا يتم تفعيل الأنيميشن إلا عند إضافة هذا الكلاس من JavaScript */
 .border-animation.animate-border {
   animation: borderAppear 2s ease-in-out forwards;
@@ -211,7 +212,9 @@ p {
     text-align: center;
     gap: 0px;
   }
-  .about-info h2, .about-info h3, .about-info p {
+  .about-info h2,
+  .about-info h3,
+  .about-info p {
     text-align: center;
   }
 }
@@ -241,4 +244,4 @@ p {
   .typing-text {
     font-size: 14px;
   }
-}/*# sourceMappingURL=about.css.map */
+} /*# sourceMappingURL=about.css.map */

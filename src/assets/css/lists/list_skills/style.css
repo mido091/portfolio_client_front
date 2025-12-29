@@ -2,22 +2,45 @@
   min-height: auto;
 }
 .skills .skills-content .skills-wrapper {
-  display: flex;
-  align-items: start;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  flex-wrap: wrap;
   min-height: auto;
   margin-bottom: 2em;
+  justify-items: center;
+}
+
+/* Responsive Grid Breakpoints */
+@media (max-width: 992px) {
+  .skills .skills-content .skills-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .skills .skills-content .skills-wrapper {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 412px) {
+  .skills .skills-content .skills-wrapper {
+    padding: 0 1rem;
+    gap: 20px;
+  }
 }
 .skills .skills-content .skills-wrapper .skills-box {
-  width: 375px;
+  width: 100%;
+  max-width: 375px;
   height: 400px;
   position: relative;
   perspective: 1000px;
   cursor: pointer;
 }
-.skills .skills-content .skills-wrapper .skills-box .front, .skills .skills-content .skills-wrapper .skills-box .back {
+.skills .skills-content .skills-wrapper .skills-box .front,
+.skills .skills-content .skills-wrapper .skills-box .back {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -56,7 +79,13 @@
   font-weight: 600;
   font-size: 4em;
 }
-.skills .skills-content .skills-wrapper .skills-box .front .center-years .years {
+.skills
+  .skills-content
+  .skills-wrapper
+  .skills-box
+  .front
+  .center-years
+  .years {
   position: relative;
   text-align: center;
   color: var(--color);
@@ -95,4 +124,4 @@
 }
 .skills .skills-content .skills-wrapper .skills-box:hover .back {
   transform: rotateY(360deg);
-}/*# sourceMappingURL=style.css.map */
+} /*# sourceMappingURL=style.css.map */

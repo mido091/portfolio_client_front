@@ -12,14 +12,38 @@
 
       <div class="certificates-grid">
         <div
-          v-for="(certificate, index) in certificates"
+          v-for="(certificate, index) in paginatedCertificates"
           :key="index"
           class="certificate-card"
+          ref="itemRefs"
         >
-        <router-link :to="`/certificates/${certificate.id}`">
-          <img :src="certificate.src" :alt="certificate.alt" />
-        </router-link>
+          <router-link :to="`/certificates/${certificate.id}`">
+            <img :src="certificate.src" :alt="certificate.alt" />
+          </router-link>
         </div>
+      </div>
+
+      <div id="pagination" v-if="totalPages > 1">
+        <button id="prev-btn" @click="prevPage" :disabled="currentPage === 1">
+          السابق
+        </button>
+        <span id="page-indicators">
+          <span
+            v-for="page in totalPages"
+            :key="page"
+            class="page-number"
+            :class="{ active: currentPage === page }"
+            @click="goToPage(page)"
+            >{{ page }}</span
+          >
+        </span>
+        <button
+          id="next-btn"
+          @click="nextPage"
+          :disabled="currentPage === totalPages"
+        >
+          التالي
+        </button>
       </div>
     </div>
   </section>
@@ -33,54 +57,91 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, nextTick, watch } from "vue";
+import { usePagination } from "@/composables/usePagination";
 
 const certificates = ref([
   {
-    id:1,
-    src: "/src/assets/images/about/yyy.jpeg",
+    id: 1,
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
-    id:2,
-    src: "/src/assets/images/about/yyy.jpeg",
+    id: 2,
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
-    id:3,
-    src: "/src/assets/images/about/yyy.jpeg",
+    id: 3,
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
-    id:4,
-    src: "/src/assets/images/about/yyy.jpeg",
+    id: 4,
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
-    id:5,
-    src: "/src/assets/images/about/yyy.jpeg",
+    id: 5,
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
-    id:6,
-    src: "/src/assets/images/about/yyy.jpeg",
+    id: 6,
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
-    id:7,
-    src: "/src/assets/images/about/yyy.jpeg",
+    id: 7,
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
   {
-    id:8,
-    src: "/src/assets/images/about/yyy.jpeg",
+    id: 8,
+    src: "/images/about/yyy.jpeg",
     alt: "Google Digital Marketing Certificate",
   },
 ]);
 
+// Pagination using composable (9 items per page)
+const {
+  currentPage,
+  totalPages,
+  paginatedItems: paginatedCertificates,
+  setPage: goToPage,
+  next: nextPage,
+  prev: prevPage,
+} = usePagination(certificates, 9);
+
+const itemRefs = ref([]);
+
+// Animation
+const animateItems = () => {
+  if (!itemRefs.value) return;
+  itemRefs.value.forEach((el, index) => {
+    if (!el) return;
+    el.style.opacity = "0";
+    el.style.transform = "translateY(20px)";
+
+    setTimeout(() => {
+      el.style.opacity = "1";
+      el.style.transform = "translateY(0)";
+    }, index * 100);
+  });
+};
+
+watch(currentPage, () => {
+  nextTick(() => {
+    animateItems();
+  });
+});
+
 // Set body background on mount, reset on unmount
 onMounted(() => {
   document.body.style.background = "#3e3e3e";
+  nextTick(() => {
+    animateItems();
+  });
 });
 
 onUnmounted(() => {
@@ -150,9 +211,31 @@ onUnmounted(() => {
 
 .certificates-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+}
+
+/* Responsive Grid Breakpoints */
+@media (max-width: 992px) {
+  .certificates-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .certificates-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 20px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 412px) {
+  .certificates-grid {
+    padding: 0 1rem;
+  }
 }
 
 .certificate-card {
@@ -160,7 +243,7 @@ onUnmounted(() => {
   overflow: hidden;
   border-radius: 15px;
   box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
   cursor: pointer;
 }
 
@@ -181,46 +264,65 @@ onUnmounted(() => {
   transform: scale(1.05);
 }
 
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-  .certificates-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
+/* Pagination Styles */
+#pagination {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
-@media (max-width: 768px) {
-  .certificates-page {
-    padding: 10rem 5% 3rem;
-  }
-
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .page-header h1 {
-    font-size: 2.2em;
-  }
-
-  .certificates-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
+#pagination button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--first);
+  background-color: var(--box-bg);
+  border: 2px solid var(--color);
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.4s ease;
 }
 
-@media (max-width: 480px) {
-  .page-header h1 {
-    font-size: 1.8em;
-  }
+#pagination button:hover:not(:disabled) {
+  background-color: var(--color);
+  color: var(--text-color);
+  transform: translateY(-3px);
+  box-shadow: 0 0 0.7rem var(--color);
+}
 
-  .certificates-grid {
-    grid-template-columns: 1fr;
-  }
+#pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
-  .back-btn {
-    font-size: 14px;
-    padding: 10px 20px;
-  }
+#pagination .page-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: var(--box-bg);
+  border: 2px solid var(--color);
+  color: var(--first);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.4s ease;
+}
+
+#pagination .page-number:hover {
+  background-color: var(--color);
+  color: var(--text-color);
+}
+
+#pagination .page-number.active {
+  background-color: var(--color);
+  color: var(--text-color);
+  border-color: var(--color);
 }
 
 /* Scroll to top button */

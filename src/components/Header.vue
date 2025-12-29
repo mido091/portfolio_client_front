@@ -1015,10 +1015,15 @@ input:checked ~ .fa-moon {
     font-weight: 600;
   }
 
-  /* Notification panel responsive */
+  /* Notification panel responsive - centered on mobile */
   .notification-panel {
-    width: 280px;
-    right: -10px;
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+    width: min(92vw, 320px);
+    max-width: 92vw;
   }
 
   .notification-bell {

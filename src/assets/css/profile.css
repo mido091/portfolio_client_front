@@ -329,7 +329,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 8px 25px rgba(108, 99, 255, 0.3); /* Kept original box-shadow for initial state */
 }
 
 .btn-save:hover {

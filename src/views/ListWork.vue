@@ -13,7 +13,9 @@
           <div class="portfolio-info">
             <h4>{{ item.title }}</h4>
             <p>{{ item.desc }}</p>
-            <a href="#"><i class="fa-solid fa-up-right-from-square"></i></a>
+            <router-link :to="`/my-project/${item.title}`" target="_blank">
+              <font-awesome-icon icon="up-right-from-square" />
+            </router-link>
           </div>
         </div>
       </div>
@@ -52,100 +54,90 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick, watch } from "vue";
+import { ref, onMounted, nextTick, watch } from "vue";
+import { usePagination } from "@/composables/usePagination";
 import "/src/assets/js/all.js/all.js";
 
 const items = ref([
   {
-    image: "/src/assets/images/list_work/social_media_poster_design.jpeg",
+    image: "/images/list_work/social_media_poster_design.jpeg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image: "/src/assets/images/list_work/10629069.jpg",
+    image: "/images/list_work/10629069.jpg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image: "/src/assets/images/list_work/1984_movie_poster.jpeg",
+    image: "/images/list_work/1984_movie_poster.jpeg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image: "/src/assets/images/list_work/F.jpeg",
+    image: "/images/list_work/F.jpeg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image: "/src/assets/images/list_work/mark.jpeg",
+    image: "/images/list_work/mark.jpeg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image: "/src/assets/images/list_work/post_design_social_media.jpeg",
+    image: "/images/list_work/post_design_social_media.jpeg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image: "/src/assets/images/list_work/post.jpeg",
+    image: "/images/list_work/post.jpeg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image: "/src/assets/images/list_work/steve_jobs.jpeg",
+    image: "/images/list_work/steve_jobs.jpeg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image:
-      "/src/assets/images/list_work/woman-holding-disposable-cup-coffee.jpg",
+    image: "/images/list_work/woman-holding-disposable-cup-coffee.jpg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image: "/src/assets/images/list_work/women.jpeg",
+    image: "/images/list_work/women.jpeg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
   {
-    image: "/src/assets/images/list_work/quote.jpeg",
+    image: "/images/list_work/quote.jpeg",
     alt: "",
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem amet quisquam explicabo praesentium corrupti esse quaerat maiores nulla sunt facilis.",
   },
 ]);
 
-// Pagination
-const currentPage = ref(1);
-const itemsPerPage = 6;
+// Pagination using composable (9 items per page)
+const {
+  currentPage,
+  totalPages,
+  paginatedItems,
+  setPage: goToPage,
+  next: nextPage,
+  prev: prevPage,
+} = usePagination(items, 9);
+
 const itemRefs = ref([]);
-
-const totalPages = computed(() => Math.ceil(items.value.length / itemsPerPage));
-
-const paginatedItems = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  return items.value.slice(start, start + itemsPerPage);
-});
-
-const goToPage = (page) => {
-  currentPage.value = page;
-};
-const prevPage = () => {
-  if (currentPage.value > 1) currentPage.value--;
-};
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) currentPage.value++;
-};
 
 // Animation
 const animateItems = () => {

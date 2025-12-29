@@ -54,7 +54,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick, watch } from "vue";
+import { ref, onMounted, nextTick, watch } from "vue";
+import { usePagination } from "@/composables/usePagination";
 import "/src/assets/js/all.js/all.js";
 
 const items = ref([
@@ -135,27 +136,17 @@ const items = ref([
   },
 ]);
 
-// Pagination
-const currentPage = ref(1);
-const itemsPerPage = 6;
+// Pagination using composable (9 items per page)
+const {
+  currentPage,
+  totalPages,
+  paginatedItems,
+  setPage: goToPage,
+  next: nextPage,
+  prev: prevPage,
+} = usePagination(items, 9);
+
 const itemRefs = ref([]);
-
-const totalPages = computed(() => Math.ceil(items.value.length / itemsPerPage));
-
-const paginatedItems = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  return items.value.slice(start, start + itemsPerPage);
-});
-
-const goToPage = (page) => {
-  currentPage.value = page;
-};
-const prevPage = () => {
-  if (currentPage.value > 1) currentPage.value--;
-};
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) currentPage.value++;
-};
 
 // Animation
 const animateItems = () => {

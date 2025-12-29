@@ -36,6 +36,19 @@ onMounted(() => {
 </script>
 
 <style>
+/* Global overflow prevention */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* Global styles are imported via CSS files */
 #progress {
   display: none !important;

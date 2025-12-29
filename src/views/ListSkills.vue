@@ -58,7 +58,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick, watch } from "vue";
+import { ref, onMounted, nextTick, watch } from "vue";
+import { usePagination } from "@/composables/usePagination";
 import "/src/assets/js/all.js/all.js";
 
 const skills = ref([
@@ -127,30 +128,15 @@ const skills = ref([
   },
 ]);
 
-// Pagination Logic
-const currentPage = ref(1);
-const itemsPerPage = 6;
-
-const totalPages = computed(() =>
-  Math.ceil(skills.value.length / itemsPerPage)
-);
-
-const paginatedSkills = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  return skills.value.slice(start, start + itemsPerPage);
-});
-
-const goToPage = (page) => {
-  currentPage.value = page;
-};
-
-const prevPage = () => {
-  if (currentPage.value > 1) currentPage.value--;
-};
-
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) currentPage.value++;
-};
+// Pagination using composable (9 items per page)
+const {
+  currentPage,
+  totalPages,
+  paginatedItems: paginatedSkills,
+  setPage: goToPage,
+  next: nextPage,
+  prev: prevPage,
+} = usePagination(skills, 9);
 
 // Counting Logic
 const skillRefs = ref([]);

@@ -4,29 +4,28 @@
       <h2>Latest <span>Blogs</span></h2>
 
       <!-- Category Filter Chips -->
-      <div
-        v-if="!loading && categoryOptions.length > 0"
-        class="category-filters"
-      >
-        <!-- "All" chip -->
-        <button
-          class="filter-chip"
-          :class="{ active: selectedCategories.length === 0 }"
-          @click="clearFilters"
-        >
-          All ({{ blogs.length }})
-        </button>
+      <div v-if="!loading && categoryOptions.length > 0" class="categories-bar">
+        <div class="category-filters">
+          <!-- "All" chip -->
+          <button
+            class="filter-chip"
+            :class="{ active: selectedCategories.length === 0 }"
+            @click="clearFilters"
+          >
+            All ({{ blogs.length }})
+          </button>
 
-        <!-- Category chips with counts -->
-        <button
-          v-for="cat in categoryOptions"
-          :key="cat.name"
-          class="filter-chip"
-          :class="{ active: selectedCategories.includes(cat.name) }"
-          @click="toggleCategory(cat.name)"
-        >
-          {{ cat.name }} ({{ cat.count }})
-        </button>
+          <!-- Category chips with counts -->
+          <button
+            v-for="cat in categoryOptions"
+            :key="cat.name"
+            class="filter-chip"
+            :class="{ active: selectedCategories.includes(cat.name) }"
+            @click="toggleCategory(cat.name)"
+          >
+            {{ cat.name }} ({{ cat.count }})
+          </button>
+        </div>
       </div>
 
       <!-- Loading state -->
@@ -366,16 +365,28 @@ onMounted(async () => {
   background-color: var(--box-bg);
 }
 
+/* Categories Bar Container */
+.categories-bar {
+  max-width: 1250px;
+  width: 100%;
+  margin: 0 auto 2rem;
+  padding: 1.5rem 2rem;
+  background: var(--box-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
 /* Category Filter Chips */
 .category-filters {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  padding: 20px 0;
-  margin-bottom: 20px;
-  overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--main-color, #ff6b35) transparent;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  justify-content: center;
 }
 
 .category-filters::-webkit-scrollbar {
@@ -383,7 +394,8 @@ onMounted(async () => {
 }
 
 .category-filters::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
 }
 
 .category-filters::-webkit-scrollbar-thumb {
@@ -391,9 +403,16 @@ onMounted(async () => {
   border-radius: 3px;
 }
 
+.category-filters::-webkit-scrollbar-thumb:hover {
+  background: #ff8555;
+}
+
 .filter-chip {
-  display: inline-block;
-  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 18px;
   background: var(--box-bg, rgba(255, 255, 255, 0.05));
   border: 2px solid rgba(255, 107, 53, 0.3);
   border-radius: 20px;
@@ -404,12 +423,19 @@ onMounted(async () => {
   font-weight: 500;
   transition: all 0.3s ease;
   cursor: pointer;
+  min-width: max-content;
 }
 
 .filter-chip:hover {
   border-color: var(--main-color, #ff6b35);
   color: var(--main-color, #ff6b35);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+}
+
+.filter-chip:focus-visible {
+  outline: 2px solid var(--main-color, #ff6b35);
+  outline-offset: 2px;
 }
 
 .filter-chip.active {
@@ -417,6 +443,13 @@ onMounted(async () => {
   border-color: var(--main-color, #ff6b35);
   color: white;
   font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.filter-chip.active:hover {
+  background: #ff8555;
+  border-color: #ff8555;
+  transform: translateY(-2px);
 }
 
 /* Category Badge on Blog Cards */
@@ -471,18 +504,32 @@ onMounted(async () => {
 }
 
 /* Responsive adjustments */
+@media (max-width: 1024px) {
+  .categories-bar {
+    padding: 1.25rem 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .categories-bar {
+    padding: 1rem 1.25rem;
+    margin: 0 auto 1.5rem;
+  }
+
   .category-filters {
-    gap: 8px;
-    padding: 15px 0;
+    gap: 10px;
     flex-wrap: nowrap;
     overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0.25rem 0;
   }
 
   .filter-chip {
-    padding: 6px 12px;
+    padding: 8px 16px;
     font-size: 13px;
     flex-shrink: 0;
+    scroll-snap-align: start;
+    min-height: 38px;
   }
 
   .empty-state {
@@ -495,6 +542,23 @@ onMounted(async () => {
 
   .empty-state p {
     font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-bar {
+    padding: 0.875rem 1rem;
+    border-radius: 10px;
+  }
+
+  .category-filters {
+    gap: 8px;
+  }
+
+  .filter-chip {
+    padding: 7px 14px;
+    font-size: 12px;
+    min-height: 36px;
   }
 }
 </style>

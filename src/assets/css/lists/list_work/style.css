@@ -2,15 +2,37 @@
   padding: 2em;
 }
 .portfolio .portfolio-boxes {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 2.5em;
+  justify-items: center;
+}
+
+/* Responsive Grid Breakpoints */
+@media (max-width: 992px) {
+  .portfolio .portfolio-boxes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .portfolio .portfolio-boxes {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 412px) {
+  .portfolio .portfolio-boxes {
+    padding: 0 1rem;
+    gap: 20px;
+  }
 }
 .portfolio .portfolio-boxes .portfolio-box {
   position: relative;
-  width: 375px;
+  width: 100%;
+  max-width: 375px;
   height: 500px;
   overflow: hidden;
   border-radius: 15px;
@@ -142,4 +164,4 @@
   place-items: center;
   font-size: 35px;
   color: var(--second);
-}/*# sourceMappingURL=style.css.map */
+} /*# sourceMappingURL=style.css.map */

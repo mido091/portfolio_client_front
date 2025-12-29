@@ -2,11 +2,23 @@
   padding: 2rem 9%;
 }
 .services .services-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 2.5em;
+  justify-items: center;
+}
+
+/* Responsive Grid Breakpoints */
+@media (max-width: 992px) {
+  .services .services-box {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .services .services-box {
+    grid-template-columns: 1fr;
+  }
 }
 .services .services-box .box {
   transition: all 0.3s ease-in-out;
@@ -70,4 +82,4 @@
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
-}/*# sourceMappingURL=experiences.css.map */
+} /*# sourceMappingURL=experiences.css.map */

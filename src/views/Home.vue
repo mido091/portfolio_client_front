@@ -48,7 +48,7 @@
         </div>
         <div class="right">
           <div class="profile">
-            <img src="/src/assets/images/my_pictures/man.jpg" alt="" />
+            <img src="/images/my_pictures/man.jpg" alt="" />
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@
       <div class="about-wrapper">
         <div class="about-left">
           <div class="about-img">
-            <img src="/src/assets/images/my_pictures/man.jpg" alt="" />
+            <img src="/images/my_pictures/man.jpg" alt="" />
           </div>
         </div>
         <div class="about-right">
@@ -285,33 +285,33 @@
   <section class="logo-container">
     <div class="logo-ticker ticker-1">
       <div class="logos">
-        <img src="/src/assets/images/clients/apple.jpg" alt="Client 1" />
-        <img src="/src/assets/images/clients/cocacola.png" alt="Client 2" />
-        <img src="/src/assets/images/clients/Coursera.png" alt="Client 3" />
-        <img src="/src/assets/images/clients/Edrak.png" alt="Client 4" />
-        <img src="/src/assets/images/clients/Google.png" alt="Client 5" />
+        <img src="/images/clients/apple.jpg" alt="Client 1" />
+        <img src="/images/clients/cocacola.png" alt="Client 2" />
+        <img src="/images/clients/Coursera.png" alt="Client 3" />
+        <img src="/images/clients/Edrak.png" alt="Client 4" />
+        <img src="/images/clients/Google.png" alt="Client 5" />
 
-        <img src="/src/assets/images/clients/apple.jpg" alt="Client 1" />
-        <img src="/src/assets/images/clients/cocacola.png" alt="Client 2" />
-        <img src="/src/assets/images/clients/Coursera.png" alt="Client 3" />
-        <img src="/src/assets/images/clients/Edrak.png" alt="Client 4" />
-        <img src="/src/assets/images/clients/Google.png" alt="Client 5" />
+        <img src="/images/clients/apple.jpg" alt="Client 1" />
+        <img src="/images/clients/cocacola.png" alt="Client 2" />
+        <img src="/images/clients/Coursera.png" alt="Client 3" />
+        <img src="/images/clients/Edrak.png" alt="Client 4" />
+        <img src="/images/clients/Google.png" alt="Client 5" />
       </div>
     </div>
 
     <div class="logo-ticker ticker-2">
       <div class="logos">
-        <img src="/src/assets/images/clients/HsoubAcademy.png" alt="Client 6" />
-        <img src="/src/assets/images/clients/infinity.png" alt="Client 7" />
-        <img src="/src/assets/images/clients/never.png" alt="Client 8" />
-        <img src="/src/assets/images/clients/stanford.png" alt="Client 9" />
-        <img src="/src/assets/images/clients/Udemy.png" alt="Client 10" />
+        <img src="/images/clients/HsoubAcademy.png" alt="Client 6" />
+        <img src="/images/clients/infinity.png" alt="Client 7" />
+        <img src="/images/clients/never.png" alt="Client 8" />
+        <img src="/images/clients/stanford.png" alt="Client 9" />
+        <img src="/images/clients/Udemy.png" alt="Client 10" />
 
-        <img src="/src/assets/images/clients/HsoubAcademy.png" alt="Client 6" />
-        <img src="/src/assets/images/clients/infinity.png" alt="Client 7" />
-        <img src="/src/assets/images/clients/never.png" alt="Client 8" />
-        <img src="/src/assets/images/clients/stanford.png" alt="Client 9" />
-        <img src="/src/assets/images/clients/Udemy.png" alt="Client 10" />
+        <img src="/images/clients/HsoubAcademy.png" alt="Client 6" />
+        <img src="/images/clients/infinity.png" alt="Client 7" />
+        <img src="/images/clients/never.png" alt="Client 8" />
+        <img src="/images/clients/stanford.png" alt="Client 9" />
+        <img src="/images/clients/Udemy.png" alt="Client 10" />
       </div>
     </div>
   </section>
@@ -567,52 +567,52 @@ const skills = ref([
 
 const tools = ref([
   {
-    image: "/src/assets/images/programs_and_tools/photoshop.jpeg",
+    image: "/images/programs_and_tools/photoshop.jpeg",
     alt: "Photoshop",
     percentage: 85,
   },
   {
-    image: "/src/assets/images/programs_and_tools/illustrator.jpeg",
+    image: "/images/programs_and_tools/illustrator.jpeg",
     alt: "Illustrator",
     percentage: 82,
   },
   {
-    image: "/src/assets/images/programs_and_tools/figma.jpeg",
+    image: "/images/programs_and_tools/figma.jpeg",
     alt: "Figma",
     percentage: 75,
   },
   {
-    image: "/src/assets/images/programs_and_tools/github.jpeg",
+    image: "/images/programs_and_tools/github.jpeg",
     alt: "Git Hub",
     percentage: 60,
   },
   {
-    image: "/src/assets/images/programs_and_tools/premiere.jpeg",
+    image: "/images/programs_and_tools/premiere.jpeg",
     alt: "Premiere",
     percentage: 90,
   },
   {
-    image: "/src/assets/images/programs_and_tools/chatgpt.jpeg",
+    image: "/images/programs_and_tools/chatgpt.jpeg",
     alt: "ChatGPT",
     percentage: 50,
   },
   {
-    image: "/src/assets/images/programs_and_tools/git.jpeg",
+    image: "/images/programs_and_tools/git.jpeg",
     alt: "Git",
     percentage: 80,
   },
   {
-    image: "/src/assets/images/programs_and_tools/canva.jpeg",
+    image: "/images/programs_and_tools/canva.jpeg",
     alt: "Canva",
     percentage: 60,
   },
   {
-    image: "/src/assets/images/programs_and_tools/notion.jpeg",
+    image: "/images/programs_and_tools/notion.jpeg",
     alt: "Notion",
     percentage: 60,
   },
   {
-    image: "/src/assets/images/programs_and_tools/semrush.jpeg",
+    image: "/images/programs_and_tools/semrush.jpeg",
     alt: "Semrush",
     percentage: 30,
   },
@@ -622,37 +622,37 @@ const projects = ref([
   {
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
-    image: "/src/assets/images/my_portfolio/steve_jobs.jpeg",
+    image: "/images/my_portfolio/steve_jobs.jpeg",
   },
   {
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
-    image: "/src/assets/images/my_portfolio/mark.jpeg",
+    image: "/images/my_portfolio/mark.jpeg",
   },
   {
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
-    image: "/src/assets/images/my_portfolio/women.jpeg",
+    image: "/images/my_portfolio/women.jpeg",
   },
   {
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
-    image: "/src/assets/images/my_portfolio/infographic_self_image.jpeg",
+    image: "/images/my_portfolio/infographic_self_image.jpeg",
   },
   {
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
-    image: "/src/assets/images/my_portfolio/quote.jpeg",
+    image: "/images/my_portfolio/quote.jpeg",
   },
   {
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
-    image: "/src/assets/images/my_portfolio/post_design_social_media.jpeg",
+    image: "/images/my_portfolio/post_design_social_media.jpeg",
   },
   {
     title: "Web Design",
     desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit...",
-    image: "/src/assets/images/my_portfolio/post.jpeg",
+    image: "/images/my_portfolio/post.jpeg",
   },
 ]);
 
