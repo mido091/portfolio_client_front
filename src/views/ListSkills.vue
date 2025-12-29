@@ -126,6 +126,13 @@ const skills = ref([
     desc: "مهارة في التواصل الفعال مع الفريق.",
     title: "Communication",
   },
+  {
+    name: "communication",
+    years: "3",
+    icon: "fa-solid fa-comments",
+    desc: "مهارة في التواصل الفعال مع الفريق.",
+    title: "Communication",
+  },
 ]);
 
 // Pagination using composable (9 items per page)

@@ -36,8 +36,17 @@
 </template>
 <script setup>
 import { useRoute } from "vue-router";
+import { onMounted, onUnmounted } from "vue";
 const route = useRoute();
 const id = route.params.id;
+
+onMounted(() => {
+  document.body.classList.add("certificate-details-footer-fix");
+});
+
+onUnmounted(() => {
+  document.body.classList.remove("certificate-details-footer-fix");
+});
 </script>
 
 <style scoped>
@@ -50,5 +59,13 @@ const id = route.params.id;
 }
 p {
   color: white;
+}
+</style>
+
+<style>
+/* Global override for this page only */
+body.certificate-details-footer-fix .footer {
+  background-color: #1c1c1d !important;
+  background: #1c1c1d !important;
 }
 </style>

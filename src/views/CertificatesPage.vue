@@ -139,6 +139,7 @@ watch(currentPage, () => {
 // Set body background on mount, reset on unmount
 onMounted(() => {
   document.body.style.background = "#3e3e3e";
+  document.body.classList.add("certificates-page-footer-fix");
   nextTick(() => {
     animateItems();
   });
@@ -146,6 +147,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.body.style.background = "";
+  document.body.classList.remove("certificates-page-footer-fix");
 });
 </script>
 
@@ -357,5 +359,13 @@ onUnmounted(() => {
 #progress-value {
   color: #fff;
   font-size: 20px;
+}
+</style>
+
+<style>
+/* Global override for footer on this page only */
+body.certificates-page-footer-fix .footer {
+  background-color: #1c1c1d !important;
+  background: #1c1c1d !important;
 }
 </style>

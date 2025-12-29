@@ -260,3 +260,7 @@ p {
     font-size: 14px;
   }
 } /*# sourceMappingURL=about.css.map */
+
+.footer {
+  background-color: #1c1c1d !important;
+}

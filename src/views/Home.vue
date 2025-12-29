@@ -16,11 +16,7 @@
           </p>
           <div class="social">
             <a href="https://www.facebook.com/share/15nQ9gTgBS/">
-              <font-awesome-icon
-                :icon="['fab', 'facebook-f']"
-                size="1x"
-                color="#ff4500"
-              />
+              <font-awesome-icon :icon="['fab', 'facebook-f']" size="1x" />
             </a>
             <a
               href="https://www.instagram.com/a7medka3oud?igsh=MWt4ZjdmczA4czh6ag=="
