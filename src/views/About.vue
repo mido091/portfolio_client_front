@@ -44,7 +44,7 @@
   </section>
   <section class="skills">
     <h2 class="fade-slide-up">My <span>Skills</span></h2>
-    <div class="border-animation">
+    <div class="border-animation" style="overflow: hidden;">
       <p>HTML, CSS, JavaScript</p>
       <p>UI/UX Design</p>
       <p>Copywriting & Content Creation</p>
@@ -54,7 +54,7 @@
   </section>
   <section class="experience">
     <h2 class="fade-slide-up">My <span>Experiences</span></h2>
-    <div class="border-animation">
+    <div class="border-animation" style="overflow: hidden;">
       <p>Front-End Developer</p>
       <p>Digital Marketer & Account Manager</p>
       <p>Graphic Designer</p>
@@ -64,7 +64,7 @@
   </section>
   <section class="interests">
     <h2 class="fade-slide-up">My <span>Interests</span></h2>
-    <div class="border-animation">
+    <div class="border-animation" style="overflow: hidden;">
       <p>Traveling & Exploration</p>
       <p>Education & Learning</p>
       <p>Business Management</p>
