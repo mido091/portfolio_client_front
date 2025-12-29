@@ -167,34 +167,49 @@ p {
 
 .border-animation {
   position: relative;
-  border-left: 5px solid transparent; /* البوردر غير ظاهر في البداية */
-  overflow: hidden;
+  padding-left: 20px; /* مسافة للبوردر */
+  overflow: visible; /* السماح برؤية البوردر خارج الحدود */
+}
+
+/* إنشاء البوردر كعنصر منفصل يمكن تحريكه */
+.border-animation::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background-color: transparent;
+  transform: translateX(50vw); /* يبدأ من منتصف الشاشة */
+  opacity: 0;
 }
 
 /* حركة البوردر من المنتصف إلى اليسار */
-@keyframes borderAppear {
+@keyframes borderSlideIn {
   0% {
-    transform: translateX(50%); /* يبدأ من منتصف الشاشة */
-    border-color: transparent;
+    transform: translateX(50vw); /* منتصف الشاشة */
+    background-color: transparent;
+    opacity: 0;
   }
-  50% {
-    transform: translateX(0); /* يتحرك إلى أقصى اليسار */
-    border-color: var(--first); /* لون البوردر أثناء الحركة */
+  30% {
+    opacity: 1;
+    background-color: var(--first); /* لون أبيض أثناء الحركة */
   }
   100% {
-    transform: translateX(0); /* يثبت في أقصى اليسار */
-    border-color: var(--color); /* لون البوردر النهائي */
+    transform: translateX(0); /* أقصى اليسار */
+    background-color: var(--color); /* اللون البرتقالي النهائي */
+    opacity: 1;
   }
 }
 
-/* لا يتم تفعيل الأنيميشن إلا عند إضافة هذا الكلاس من JavaScript */
-.border-animation.animate-border {
-  animation: borderAppear 2s ease-in-out forwards;
+/* تفعيل الأنيميشن عند إضافة الكلاس */
+.border-animation.animate-border::before {
+  animation: borderSlideIn 2s ease-in-out forwards;
 }
 
 .border-animation p {
   opacity: 0; /* النص مخفي في البداية */
-  transform: translateX(-500%); /* يبدأ من اليسار */
+  transform: translateX(-100px); /* يبدأ من اليسار */
   transition: opacity 0.5s ease, transform 1.5s ease;
 }
 
